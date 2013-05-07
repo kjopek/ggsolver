@@ -1,40 +1,26 @@
-package pl.agh.edu.mes.gg;
+package pl.edu.agh.mes.gg;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
+import org.junit.Assert;
 
 /**
  * Unit test for simple App.
  */
- 
-@RunWith(JUnit4.class)
-public class AppTest 
-    extends TestCase
+
+public class SolverTest
 {
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public AppTest( String testName )
-    {
-        super( testName );
+
+    public SolverTest() {
     }
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
+    @Test
+    public void testSolve()
     {
-        return new TestSuite( AppTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+        Assert.assertTrue( true );
     }
 }
