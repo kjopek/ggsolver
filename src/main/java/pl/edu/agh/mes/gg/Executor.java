@@ -8,6 +8,10 @@
 
 package pl.edu.agh.mes.gg;
 
+import java.util.concurrent.ConcurrentHashMap;
+
+
+
 
 class Executor extends Thread {
 	public synchronized void run() {
@@ -28,6 +32,7 @@ class Executor extends Thread {
 		p2a.start();
 		p2b.start();
 
+		
 		counter.release();
 
 		//p2^2,p3^2
@@ -53,12 +58,124 @@ class Executor extends Thread {
 		p3f.start();
 
 		counter.release();
+		
+		
+		A1 a1a = new A1(p3c.m_vertex, counter);
+		A aa = new A(p3d.m_vertex, counter);
+		A ab = new A(p3e.m_vertex, counter);
+		A ac = new A(p3f.m_vertex, counter);
+		A ad = new A(p3a.m_vertex, counter);
+		AN ana = new AN(p3b.m_vertex, counter);
+		
+		a1a.start();
+		aa.start();
+		ab.start();
+		ac.start();
+		ad.start();
+		ana.start();
+		
+		counter.release();
+		
+		
+		A2 a2a = new A2(p2b.m_vertex, counter);
+		A2 a2b = new A2(p2c.m_vertex, counter);
+		A2 a2c = new A2(p2d.m_vertex, counter);
+		
+		a2a.start(); 
+		a2b.start(); 
+		a2c.start();
+		
+		counter.release();
 
+		
+		E2 e2g = new E2(p2b.m_vertex, counter);
+		E2 e2h = new E2(p2c.m_vertex, counter);
+		E2 e2i = new E2(p2d.m_vertex, counter);
+		
+		e2g.start();
+		e2h.start();
+		e2i.start();
+		
+		counter.release();
+		
+
+		
+		A2 a2d = new A2(p2a.m_vertex, counter);
+		
+		a2d.start();
+		
+		counter.release();
+		
+	
+		
+		E2 e2j = new E2(a2d.m_vertex, counter);
+		
+		e2j.start();
+		
+		counter.release();
+		
+		A2 a2e = new A2(S, counter);
+		
+		a2e.start();
+		
+		counter.release();
+		
+				
+		ERoot eroota = new ERoot(S,counter);
+		
+		eroota.start(); 
+		
+		counter.release();
+		
+		
+		
+		BS bsa = new BS(S, counter);
+		
+		bsa.start();
+		
+		counter.release();
+		
+		BS bsb = new BS(S.m_left, counter);
+		BS bsc = new BS(S.m_right, counter);
+		
+		bsb.start(); 
+		bsc.start();
+		
+		counter.release();
+		
+		BS bsd = new BS(S.m_left.m_left, counter);
+		BS bse = new BS(S.m_left.m_right, counter);
+		
+		
+		bsd.start();
+		bse.start();
+				
+		counter.release();
+		
+		
+		
 		//done
 		System.out.println("done");
 		GraphDrawer drawer = new GraphDrawer();
 		drawer.draw(p1.m_vertex);
-
+		System.out.println("---------------------");
+		
+		System.out.println(bsa.m_vertex.m_b[0]);
+		System.out.println(bsa.m_vertex.m_b[1]);
+		System.out.println(bsa.m_vertex.m_b[2]);
+		System.out.println(bsb.m_vertex.m_b[0]);
+		System.out.println(bsb.m_vertex.m_b[1]);
+		System.out.println(bsb.m_vertex.m_b[2]);
+		System.out.println(bsc.m_vertex.m_b[0]);
+		System.out.println(bsc.m_vertex.m_b[1]);
+		System.out.println(bsc.m_vertex.m_b[2]);
+		System.out.println(bsd.m_vertex.m_b[0]);
+		System.out.println(bsd.m_vertex.m_b[1]);
+		System.out.println(bsd.m_vertex.m_b[2]);
+		System.out.println(bsc.m_vertex.m_b[2]);
+		System.out.println(bse.m_vertex.m_b[0]);
+		System.out.println(bse.m_vertex.m_b[1]);
+		System.out.println(bse.m_vertex.m_b[2]);
 	}
 }
 
