@@ -14,6 +14,10 @@ abstract class Production extends Thread {
 		m_vertex = Vert;
 		m_counter = Count;
 		m_drawer = new GraphDrawer();
+		
+		/* increment counter - main thread should wait for finish of all productions 
+		 * before continue */
+		m_counter.inc();
 	}
 
 	//returns first vertex from the left
@@ -21,12 +25,11 @@ abstract class Production extends Thread {
 
 	//run the thread
 	public void run() {
-		//m_counter.inc();
 		//apply the production
 		m_vertex = apply(m_vertex);
 		//plot the graph
 		//m_drawer.draw(m_vertex);
-		//m_counter.dec();
+		m_counter.dec();
 	}
 
 	//vertex where the production will be applied
