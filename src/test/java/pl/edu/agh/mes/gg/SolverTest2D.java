@@ -131,7 +131,7 @@ public class SolverTest2D extends Thread {
 		a8.start();
 
 		counter.release();
-		
+
 		A2 a2_1 = new A2(p2c.m_vertex, counter);
 		A2 a2_2 = new A2(p2d.m_vertex, counter);
 		A2 a2_3 = new A2(p2e.m_vertex, counter);

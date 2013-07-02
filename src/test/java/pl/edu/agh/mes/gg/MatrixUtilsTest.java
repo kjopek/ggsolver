@@ -70,5 +70,13 @@ public class MatrixUtilsTest {
 		
 		assertTrue(Math.abs(matrix[1][0]) < epsilon);
 		assertTrue(Math.abs(matrix[2][0]) < epsilon);
+		
+		double matrix1[][] = {{3.0, 2.0, -1.0},
+							  {2.0, -2.0, 4.0},
+							  {-1.0, 0.5, -1.0}};
+		double rhs1[] = {1, -2, 0};
+		MatrixUtils.eliminate(3, matrix1, rhs1);
+		MatrixUtils.printMatrix(matrix1, rhs1);
+		
 	}
 }

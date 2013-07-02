@@ -29,8 +29,8 @@ public class MatrixUtils {
 		// TODO: pivoting!!
 		double x;
 		for (int i=0;i<rowsToElim;i++) {
-			  /* 
-			  double x = matrix[i][i];
+			  
+			  x = matrix[i][i];
 			  
 			  matrix[i][i] /= x;
 			  
@@ -39,14 +39,14 @@ public class MatrixUtils {
 				  matrix[i][j] /= x;
 			  }
 			  
-			  rhs[i] /= x;
-			  */
+			  rhs[i] /= x; 
+			  
 			  for (int j=i+1; j<matrix.length; j++) {
-				  x = -matrix[j][i];
+				  x = matrix[j][i];
 				  for (int k=i; k<matrix.length; k++) {
-					  matrix[j][k] += x*matrix[i][k];
+					  matrix[j][k] -= x*matrix[i][k];
 				  }
-				  rhs[j] += x*rhs[i];
+				  rhs[j] -= x*rhs[i];
 				  matrix[j][i] = 0.0;
 			  }
 			  
@@ -60,9 +60,9 @@ public class MatrixUtils {
 		
 		for (int i=0; i<N; i++) {
 			for (int j=0; j<N; j++) {
-				System.out.print(String.format("% .7f ", matrix[i][j]));
+				System.out.print(String.format("% .15f ", matrix[i][j]));
 			}
-			System.out.println(String.format(" | % .7f", rhs[i]));
+			System.out.println(String.format(" | % .15f", rhs[i]));
 		}
 		
 	}

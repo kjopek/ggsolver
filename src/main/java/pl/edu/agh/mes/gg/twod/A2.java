@@ -36,18 +36,18 @@ public class A2 extends Production {
 				T.m_a[i+3][j+3] = T.m_left.m_a[i][j];
 				
 				// x: bottom y: bottom
-				T.m_a[i+6][j+6] = T.m_right.m_a[i][j];
+				T.m_a[i+6][j+6] = T.m_right.m_a[i+3][j+3];
 
 				// x: left y:bottom
-				T.m_a[i+6][j] = T.m_right.m_a[i][j+3];
+				T.m_a[i+6][j] = T.m_right.m_a[i+3][j];
 				
 				// x: right y: top
-				T.m_a[i][j+6] = T.m_right.m_a[i+3][j]; 
+				T.m_a[i][j+6] = T.m_right.m_a[i][j+3]; 
 				
 			}
 			T.m_b[i] = T.m_left.m_b[i+3] + T.m_right.m_b[i];
 			T.m_b[i+3] = T.m_left.m_b[i];
-			T.m_b[i+6] = T.m_right.m_b[i];
+			T.m_b[i+6] = T.m_right.m_b[i+3];
 		}
 		
 		//MatrixUtils.printMatrix(T.m_a, T.m_b);

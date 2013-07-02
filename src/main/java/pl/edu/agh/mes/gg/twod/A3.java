@@ -50,7 +50,7 @@ public class A3 extends Production {
 			T.m_b[i+6] = T.m_right.m_b[i+6];
 		}
 		
-		MatrixUtils.printMatrix(T.m_a, T.m_b);
+		//MatrixUtils.printMatrix(T.m_a, T.m_b);
 		return T;
 	}
 
