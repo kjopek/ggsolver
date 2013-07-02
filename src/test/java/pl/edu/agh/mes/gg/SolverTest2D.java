@@ -1,5 +1,7 @@
 package pl.edu.agh.mes.gg;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import matrixgeneration.DoubleArgFunction;
@@ -13,6 +15,7 @@ import pl.edu.agh.mes.gg.twod.A1;
 import pl.edu.agh.mes.gg.twod.A2;
 import pl.edu.agh.mes.gg.twod.A3;
 import pl.edu.agh.mes.gg.twod.AN;
+import pl.edu.agh.mes.gg.twod.BS;
 import pl.edu.agh.mes.gg.twod.E;
 import pl.edu.agh.mes.gg.twod.ERoot;
 
@@ -24,7 +27,7 @@ public class SolverTest2D extends Thread {
 	@Test
 	public void testSolveMES2D(){
 		int nrOfTiers = 8;
-		
+		final double epsilon = 1e-7;
 
 		DoubleArgFunction f = new DoubleArgFunction(){
 
@@ -37,21 +40,6 @@ public class SolverTest2D extends Thread {
 		
 		MatrixGenerator matrixGenerator = new MatrixGenerator(); 
 		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1, -1, 1,f);
-
-		/* backward-substitution */
-		/*
-		for (int i=elimMatrixSize-1; i>=0; i--) {
-			double s = elimRhs[i];
-			for (int j=elimMatrixSize-1; j>=i+1; j--) {
-				s -= elimFullMatrix[i][j] * result[j];
-			}
-			result[i] = s/elimFullMatrix[i][i];
-		}
-		
-		for (int i=0; i<elimMatrixSize; i++) {
-			System.out.println(result[i]);
-		}
-		*/
 		
 		Counter counter = new Counter(this);
 
@@ -175,7 +163,39 @@ public class SolverTest2D extends Thread {
 		ERoot eroot = new ERoot(p1.m_vertex, counter);
 		eroot.start();
 		counter.release();
+		
+		BS bs = new BS(p1.m_vertex, counter);
+		bs.start();
+		counter.release();
+		
+		BS bs1 = new BS(p2a.m_vertex, counter);
+		BS bs2 = new BS(p2b.m_vertex, counter);
+		bs1.start();
+		bs2.start();
+		counter.release();
+		
+		BS bs3 = new BS(p2c.m_vertex, counter);
+		BS bs4 = new BS(p2d.m_vertex, counter);
+		BS bs5 = new BS(p2e.m_vertex, counter);
+		BS bs6 = new BS(p2f.m_vertex, counter);
+		
+		bs3.start();
+		bs4.start();
+		bs5.start();
+		bs6.start();
 
+		counter.release();
+		
+		// check correctness of solution, rhs should contain only 1.0
+		
+		for (int i=0;i<6;i++) {
+			assertTrue(Math.abs(p2c.m_vertex.m_b[i]-1.0) < epsilon);
+			assertTrue(Math.abs(p2d.m_vertex.m_b[i]-1.0) < epsilon);
+			assertTrue(Math.abs(p2e.m_vertex.m_b[i]-1.0) < epsilon);
+			assertTrue(Math.abs(p2f.m_vertex.m_b[i]-1.0) < epsilon);
+			
+		}
+		
 	}
 
 }
