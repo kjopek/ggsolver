@@ -1,5 +1,5 @@
 /**
- * @(#)EliminationTree.java
+ * @(#)OneDConcurrency.java
  *
  * OneDConcurrency application
  *
@@ -7,9 +7,10 @@
  * @version 1.00 2011/6/13
  */
 
-package pl.edu.agh.mes.gg;
+package pl.edu.agh.mes.gg.oned;
 
-public class EliminationTree {
+
+public class OneDConcurrency {
 
     public static void main(String[] args) {
 
@@ -17,3 +18,4 @@ public class EliminationTree {
 		e.start();
 	}
 }
+
