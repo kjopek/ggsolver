@@ -8,21 +8,21 @@
 
 package pl.edu.agh.mes.gg;
 
-class Counter {
+public class Counter {
 	int m_counter;
 	Thread m_notify;
 
-	Counter(Thread Notify) {
+	public Counter(Thread Notify) {
 		m_counter=0;
 		m_notify = Notify;
 	}
 
-	synchronized void inc() {
+	public synchronized void inc() {
 		m_counter++;
 		System.out.println("Counter:"+m_counter);
 	}
 
-	synchronized void dec() {
+	public synchronized void dec() {
 		if(m_counter>0)
 			m_counter--;
 		System.out.println("Counter:"+m_counter);
@@ -33,7 +33,7 @@ class Counter {
 		}
 	}
 
-	synchronized void release() {
+	public synchronized void release() {
 		try {
 		  System.out.println("Counter:wait");
 

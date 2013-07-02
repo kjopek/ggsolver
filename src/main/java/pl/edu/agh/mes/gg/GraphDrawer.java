@@ -8,11 +8,11 @@
 
 package pl.edu.agh.mes.gg;
 
-class GraphDrawer {
-	GraphDrawer() {
+public class GraphDrawer {
+	public GraphDrawer() {
 	}
 	//draw the graph
-	void draw(Vertex v) {
+	public void draw(Vertex v) {
 	  //plot the tree in the pre-order
       //go up to the root
 	  while(v.m_parent!=null) {

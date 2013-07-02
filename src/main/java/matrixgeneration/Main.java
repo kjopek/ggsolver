@@ -1,6 +1,5 @@
 package matrixgeneration;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class Main {
@@ -9,6 +8,7 @@ public class Main {
 		
 		
 		int nrOfTiers = 5; 
+		int k=0;
 		DoubleArgFunction f = new DoubleArgFunction(){
 
 			@Override
@@ -29,28 +29,46 @@ public class Main {
 		double[][] matrix = new double[matrixSize][matrixSize];
 		double[] rhs = new double[matrixSize];
 		
-		for(Tier tier : tierList)
+		for (Tier tier: tierList) {
 			tier.fillMatrixAndRhs(matrix, rhs);
+		}
 		
-		
-		
-		for(int i =0; i< matrixSize; i++){
-			System.out.println();
-			for(int j=0; j<matrixSize; j++){
-				System.out.print(matrix[i][j] + " ");
+		System.out.println("A = [");
+		for (int i = 0; i < matrixSize; i++) {
+			System.out.print("[");
+			for (int j = 0; j < matrixSize; j++) {
+				System.out.print(matrix[i][j]+",");
 			}
+			System.out.println("],");
 		}
-			
-		System.out.println();
-		System.out.println();
-		for(int i =0; i< matrixSize; i++){
-			System.out.println(rhs[i]);
+		System.out.println("]");
+		
+		System.out.println("b=[");
+		for (int i = 0; i<matrixSize; i++) {
+			System.out.println("["+rhs[i]+"],");
 		}
+		System.out.println("]");
 		
+		/*
+		for(Tier tier : tierList) {
+			double [][] matrix = tier.getMatrix();
+			double [] rhs = tier.getRhs();
+			//tier.fillMatrixAndRhs(matrix, rhs);
 		
-		
-		
-	}
-	
 
+			for(int i =0; i< matrix.length; i++){
+				System.out.println();
+				for(int j=0; j<matrix.length; j++){
+					System.out.print(matrix[i][j] + " ");
+				}
+			}
+		
+			System.out.println();
+			System.out.println();
+			for (int i=0; i<rhs.length; i++) {
+				System.out.println(rhs[i]);
+			}
+			
+		} */
+	}
 }

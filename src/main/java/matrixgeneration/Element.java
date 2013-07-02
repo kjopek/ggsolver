@@ -36,7 +36,6 @@ public class Element {
 				throw new RuntimeException();
 			}
 		}
-		
 	};
 	
 	private DoubleArgFunction topRightFunction = new DoubleArgFunction(){

@@ -34,7 +34,6 @@ public class MatrixGenerator {
 		
 		for(int i = 1; i < nrOfTiers ; i++){
 			
-			 
 			x = x + s; 
 			y = y - s / 2.0;
 			s = s /2.0;
