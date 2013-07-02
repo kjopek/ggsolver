@@ -29,6 +29,10 @@ public class BS extends Production{
 					T.m_b[i+6] = parent.m_b[i+6];
 				}
 			}
+			
+			// lower part of matrix [4:9]x[4:9] should be filled with 1.0 on diagonal and 0.0
+			// everywhere else
+			
 			for (int i=0; i<6;i++) {
 				for (int j=0;j<6;j++) {
 					if (i==j) {
