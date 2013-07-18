@@ -18,18 +18,19 @@ public class AN extends Production {
 	public Vertex apply(Vertex T) {
 		  System.out.println("AN");
 		  
-		  double [][] data = new double[7][7];
-		  double [] rhs = new double[7];
+		  double [][] data = new double[21][21];
+		  double [] rhs = new double[21];
 
-		  for (int i=0; i<6; i++) {
-			  for (int j=0; j<6; j++) {
-				  data[i+1][j+1] = m_tier.getMatrix()[i][j]; 
+		  for (int i=0; i<17; i++) {
+			  for (int j=0; j<17; j++) {
+				  data[i+4][j+4] = m_tier.getMatrix()[i][j]; 
 			  }
-			  rhs[i+1] = m_tier.getRhs()[i];
+			  rhs[i+4] = m_tier.getRhs()[i];
 		  }
 		  
 		  for (int i=0;i<6;i++) {
 			  data[0][i+1] = m_tier.getMatrix()[6][i];
+			  data[1]
 			  data[i+1][0] = m_tier.getMatrix()[i][6];
 		  }
 		  data[0][0] = m_tier.getMatrix()[6][6];

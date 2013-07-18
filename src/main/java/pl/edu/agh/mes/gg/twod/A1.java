@@ -22,13 +22,36 @@ public class A1 extends Production{
 		  double [][] matrix = m_tier.getMatrix().clone();
 		  double []rhs = m_tier.getRhs().clone();
 		  
-		  // in A1 we need to move second and fourth [row,col] to the top-left corner of matrix
+		  // in A1 we need to move 2,4,6,8 [row,col] to the top-left corner of matrix
 		  MatrixUtils.swapCols(0, 1, matrix);
 		  MatrixUtils.swapCols(2, 3, matrix);
+		  MatrixUtils.swapCols(4, 5, matrix);
+		  MatrixUtils.swapCols(6, 7, matrix);
+		  
 		  MatrixUtils.swapCols(1, 2, matrix);
+		  MatrixUtils.swapCols(3, 4, matrix);
+		  MatrixUtils.swapCols(5, 6, matrix);
+
+		  MatrixUtils.swapCols(2, 3, matrix);
+		  MatrixUtils.swapCols(4, 5, matrix);
+		  
+		  MatrixUtils.swapCols(3, 4, matrix);
+
 		  MatrixUtils.swapRows(0, 1, matrix, rhs);
 		  MatrixUtils.swapRows(2, 3, matrix, rhs);
+		  MatrixUtils.swapRows(4, 5, matrix, rhs);
+		  MatrixUtils.swapRows(6, 7, matrix, rhs);
+		  
 		  MatrixUtils.swapRows(1, 2, matrix, rhs);
+		  MatrixUtils.swapRows(3, 4, matrix, rhs);
+		  MatrixUtils.swapRows(5, 6, matrix, rhs);
+
+		  MatrixUtils.swapRows(2, 3, matrix, rhs);
+		  MatrixUtils.swapRows(4, 5, matrix, rhs);
+		  
+		  MatrixUtils.swapRows(3, 4, matrix, rhs);
+
+		  
 
 		  // pre-processing
 		  MatrixUtils.eliminate(5, matrix, rhs);
@@ -36,11 +59,11 @@ public class A1 extends Production{
 		  MatrixUtils.printMatrix(matrix, rhs);
 		  
 		  // copy out eliminated matrix
-		  for (int i=0; i<6; i++) {
-			  for (int j=0;j<6;j++) {
-				  T.m_a[i][j] = matrix[i+2][j+2];
+		  for (int i=0; i<17; i++) {
+			  for (int j=0;j<17;j++) {
+				  T.m_a[i][j] = matrix[i+4][j+4];
 			  }
-			  T.m_b[i] = rhs[i+2];
+			  T.m_b[i] = rhs[i+4];
 		  }		  
 		  
 		  return T;
