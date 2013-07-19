@@ -223,7 +223,6 @@ public class Element {
 		this.botRightVertexNr = nr + 3;
 		
 
-		
 		double  m[][] = new double[4][4];
 		double r[] = new double[4];
 		fillTierMatrix(m, r, new DoubleArgFunction() {

@@ -37,7 +37,8 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 
 			@Override
 			public double computeValue(double x, double y) {
-				return x+12*y;
+				return x*y+12*y;
+
 			}
 			
 		};
@@ -227,13 +228,11 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 		bs13.addCoefficients(alternativeSolutionMap, 20);
 		bs14.addCoefficients(alternativeSolutionMap, 23);
 		
-		
-		
+
 		if(alternativeSolutionMap.size() == solution.size()){
 			for(int key : alternativeSolutionMap.keySet()){
 				if(solution.containsKey(key) && Math.abs((solution.get(key) - alternativeSolutionMap.get(key))) < 0.000001 ){
 					System.out.println("ok " + key + " " + solution.get(key) + " " + alternativeSolutionMap.get(key));
-					continue;
 				}
 				else{
 					System.out.println("zle " + key + " " + solution.get(key) + " " + alternativeSolutionMap.get(key));
