@@ -38,9 +38,7 @@ public class AN extends Production {
 		  data[0][0] = m_tier.getMatrix()[6][6];
 		  rhs[0] = m_tier.getRhs()[6];
 		  
-		  
-		  MatrixUtils.eliminate(1, data, rhs);
-		  
+		  MatrixUtils.eliminate(1, data, rhs);		  
 		  
 		  // copy out matrix
 		  for (int i=1; i<7; i++) {
