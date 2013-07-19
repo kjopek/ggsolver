@@ -36,6 +36,9 @@ public class Vertex {
 	//local system of equations
 	public double[][] m_a;
 	public double[] m_b;
+	
+	public double[][] orig_matrix = null;
+	public double[] orig_rhs = null;
 
 	//methods for adding links
 	public void set_left(Vertex Left){

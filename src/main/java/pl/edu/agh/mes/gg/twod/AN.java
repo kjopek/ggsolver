@@ -18,6 +18,9 @@ public class AN extends Production {
 	public Vertex apply(Vertex T) {
 		  System.out.println("AN");
 		  
+		  T.m_a = new double[6][6];
+		  T.m_b = new double[6];
+		  
 		  double [][] data = new double[7][7];
 		  double [] rhs = new double[7];
 
@@ -38,8 +41,6 @@ public class AN extends Production {
 		  
 		  MatrixUtils.eliminate(1, data, rhs);
 		  
-		  T.m_a = new double[6][6];
-		  T.m_b = new double[6];
 		  
 		  // copy out matrix
 		  for (int i=1; i<7; i++) {
@@ -48,6 +49,10 @@ public class AN extends Production {
 			  }
 			  T.m_b[i-1] = rhs[i];
 		  }
+		  
+		  T.orig_matrix = data;
+		  T.orig_rhs = rhs;
+		  
 		  		  
 		  return T;
 	}

@@ -29,11 +29,15 @@ public class A2 extends Production {
 				// x: center y: top
 				T.m_a[i][j+3] = T.m_left.m_a[i+3][j];
 				
+				// x: right y: top
+				T.m_a[i][j+6] = T.m_right.m_a[i][j+3]; 
+				
 				// x: left y:center
 				T.m_a[i+3][j] = T.m_left.m_a[i][j+3];
 				
 				// x: center y:center
 				T.m_a[i+3][j+3] = T.m_left.m_a[i][j];
+				
 				
 				// x: bottom y: bottom
 				T.m_a[i+6][j+6] = T.m_right.m_a[i+3][j+3];
@@ -41,8 +45,7 @@ public class A2 extends Production {
 				// x: left y:bottom
 				T.m_a[i+6][j] = T.m_right.m_a[i+3][j];
 				
-				// x: right y: top
-				T.m_a[i][j+6] = T.m_right.m_a[i][j+3]; 
+
 				
 			}
 			T.m_b[i] = T.m_left.m_b[i+3] + T.m_right.m_b[i];

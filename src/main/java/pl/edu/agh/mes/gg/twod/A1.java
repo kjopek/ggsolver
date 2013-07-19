@@ -17,6 +17,9 @@ public class A1 extends Production{
 	
 	public Vertex apply(Vertex T) {
 		  System.out.println("A1");
+
+		  T.m_a = new double[6][6];
+		  T.m_b = new double[6];
 		  
 		  // XXX: do we really need this?
 		  double [][] matrix = m_tier.getMatrix().clone();
@@ -32,8 +35,9 @@ public class A1 extends Production{
 
 		  // pre-processing
 		  MatrixUtils.eliminate(5, matrix, rhs);
-		  System.out.println("========");
-		  MatrixUtils.printMatrix(matrix, rhs);
+		  
+		  T.orig_matrix = matrix;
+		  T.orig_rhs = rhs;
 		  
 		  // copy out eliminated matrix
 		  for (int i=0; i<6; i++) {
