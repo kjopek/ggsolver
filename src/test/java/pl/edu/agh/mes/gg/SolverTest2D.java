@@ -123,15 +123,14 @@ public class SolverTest2D extends Thread {
 		A2 a2_1 = new A2(p2c.m_vertex, counter);
 		A2 a2_2 = new A2(p2d.m_vertex, counter);
 		A2 a2_3 = new A2(p2e.m_vertex, counter);
-		A2 a2_4 = new A2(p2f.m_vertex, counter);
+		A2 a2_4 = new A2(p2f.m_vertex, counter); 
 		
 		a2_1.start();
 		a2_2.start();
 		a2_3.start();
 		a2_4.start();
-		
 		counter.release();
-		
+
 		E e1 = new E(p2c.m_vertex, counter);
 		E e2 = new E(p2d.m_vertex, counter);
 		E e3 = new E(p2e.m_vertex, counter);
@@ -185,7 +184,26 @@ public class SolverTest2D extends Thread {
 		bs6.start();
 
 		counter.release();
+
+		BS bs7 = new BS(p3a.m_vertex, counter);
+		BS bs8 = new BS(p3b.m_vertex, counter);
+		BS bs9 = new BS(p3c.m_vertex, counter);
+		BS bs10 = new BS(p3d.m_vertex, counter);
+		BS bs11 = new BS(p3e.m_vertex, counter);
+		BS bs12 = new BS(p3f.m_vertex, counter);
+		BS bs13 = new BS(p3g.m_vertex, counter);
+		BS bs14 = new BS(p3h.m_vertex, counter);
 		
+		bs7.start();
+		bs8.start();
+		bs9.start();
+		bs10.start();		
+		bs11.start();
+		bs12.start();
+		bs13.start();
+		bs14.start();
+		
+		counter.release(); 
 		// check correctness of solution, rhs should contain only 1.0
 		
 		for (int i=0;i<6;i++) {
@@ -195,6 +213,10 @@ public class SolverTest2D extends Thread {
 			assertTrue(Math.abs(p2f.m_vertex.m_b[i]-1.0) < epsilon);
 			
 		}
+		
+		// extra variables are here:
+		MatrixUtils.printMatrix(p3h.m_vertex.orig_matrix, p3h.m_vertex.orig_rhs);
+		MatrixUtils.printMatrix(p3a.m_vertex.orig_matrix, p3a.m_vertex.orig_rhs);
 		
 	}
 
