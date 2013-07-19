@@ -1,5 +1,7 @@
 package pl.edu.agh.mes.gg.twod;
 
+import java.util.Map;
+
 import pl.edu.agh.mes.gg.Counter;
 import pl.edu.agh.mes.gg.MatrixUtils;
 import pl.edu.agh.mes.gg.Production;
@@ -59,6 +61,12 @@ public class BS extends Production{
 		//MatrixUtils.printMatrix(T.m_a, T.m_b);
 		
 		return T; 
+	}
+	
+	public void addCoefficients(Map<Integer, Double> solution, int firstNodeNr){
+		
+		for(int i = firstNodeNr; i<firstNodeNr + 6; i++)
+			solution.put(firstNodeNr,this.m_vertex.m_b[i - firstNodeNr]); 
 	}
 	
 }

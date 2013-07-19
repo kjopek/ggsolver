@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.management.RuntimeErrorException;
+
 import matrixgeneration.DoubleArgFunction;
 import matrixgeneration.MatrixGenerator;
 import matrixgeneration.Tier;
@@ -194,6 +196,17 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 			tier.setCoefficients(solution);
 			tier.checkInterpolationCorectness(f);
 		}
+		
+		Map<Integer, Double> map = null; 
+		if(map.size() == solution.size()){
+			for(int key : map.keySet()){
+				if(solution.containsKey(key) && Math.abs((solution.get(key) - map.get(key))) < 0.000001 )
+					continue;
+				throw new RuntimeException("wrong coefficient " + key + " " + ((solution.get(key) - map.get(key))));
+			}
+		}
+		else
+			throw new RuntimeException("wrong solution !");
 		
 		
 	}
