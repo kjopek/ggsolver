@@ -37,13 +37,13 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 
 			@Override
 			public double computeValue(double x, double y) {
-				return x+y; 
+				return x+12*y;
 			}
 			
 		};
 		
 		MatrixGenerator matrixGenerator = new MatrixGenerator(); 
-		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -255, 0, 256,f);
+		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, 0, 0, 6,f);
 		
 		Counter counter = new Counter(this);
 
@@ -227,7 +227,7 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 		bs13.addCoefficients(alternativeSolutionMap, 20);
 		bs14.addCoefficients(alternativeSolutionMap, 23);
 		
-		MatrixUtils.printMatrix(matrixGenerator.getMatrix(), matrixGenerator.getRhs());
+		
 		
 		if(alternativeSolutionMap.size() == solution.size()){
 			for(int key : alternativeSolutionMap.keySet()){

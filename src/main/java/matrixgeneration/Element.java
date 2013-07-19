@@ -134,7 +134,6 @@ public class Element {
 		this.topLeftVertexNr = -1; 
 		this.topRightVertexNr = -1; 
 		this.botRightVertexNr = -1; 
-		System.out.println(botLeftCoord[0] + " " + botLeftCoord[1] + " " + size);
 	}
 	
 	
@@ -223,17 +222,7 @@ public class Element {
 		this.topRightVertexNr = nr + 2; 
 		this.botRightVertexNr = nr + 3;
 		
-		
-//		this.botLeftCoord[1] -= size; 
-//		this.size*=2; 
-//		this.position = Position.BOT_RIGHT;
-		System.out.println("size " + size);
-		System.out.println(botLeftVertexNr);
-		System.out.println(topLeftVertexNr);
-		System.out.println(topRightVertexNr);
-		System.out.println(botRightVertexNr);
-		System.out.println(botLeftCoord[0]);
-		System.out.println(botLeftCoord[1] + " Kkkk");
+
 		
 		double  m[][] = new double[4][4];
 		double r[] = new double[4];
@@ -245,9 +234,6 @@ public class Element {
 				return x*y;
 			}
 		}, 26);
-		System.out.println("test ---------------");
-		MatrixUtils.printMatrix(m, r);
-		System.out.println("test ---------------");
 		return new Element[0];
 		
 		

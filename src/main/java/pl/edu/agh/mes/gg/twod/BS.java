@@ -78,7 +78,7 @@ public class BS extends Production{
 					}
 					for (int i=0; i<3; i++) {
 						T.m_b[i] = parent.m_b[i];
-						T.m_b[i+3] = parent.m_b[i+3];
+						T.m_b[i+3] = parent.m_b[i+6];
 					}
 				}
 			}
