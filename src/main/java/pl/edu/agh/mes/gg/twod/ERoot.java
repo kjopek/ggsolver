@@ -15,7 +15,7 @@ public class ERoot extends Production {
 	public Vertex apply(Vertex T) {
 		System.out.println("ERoot");
 		// final elimination
-		MatrixUtils.eliminate(9, T.m_a, T.m_b);
+		MatrixUtils.eliminate(15, T.m_a, T.m_b);
 		//MatrixUtils.printMatrix(T.m_a, T.m_b);
 		return T;
 	}

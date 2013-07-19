@@ -15,7 +15,7 @@ public class E extends Production {
 	@Override
 	public Vertex apply(Vertex T) {
 		System.out.println("E");
-		MatrixUtils.eliminate(3, T.m_a, T.m_b);
+		MatrixUtils.eliminate(5, T.m_a, T.m_b);
 		//MatrixUtils.printMatrix(T.m_a, T.m_b);
 		return T;
 	}
