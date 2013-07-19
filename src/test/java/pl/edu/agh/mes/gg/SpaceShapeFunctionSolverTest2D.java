@@ -37,7 +37,7 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 
 			@Override
 			public double computeValue(double x, double y) {
-				return (1-x)*(1-y); 
+				return x+y; 
 			}
 			
 		};
