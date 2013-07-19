@@ -1,5 +1,8 @@
 package pl.edu.agh.mes.gg;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MatrixUtils {
 	private static final double epsilon = 1e-10;
 	
@@ -65,5 +68,19 @@ public class MatrixUtils {
 			System.out.println(String.format(" | % .15f", rhs[i]));
 		}
 		
+	}
+	
+	public static Map<Integer, Double> getSolutionThroughBackwardSubstitution(double matrix[][], double rhs[]){
+		eliminate(rhs.length, matrix, rhs);
+		Map<Integer, Double> solution = new HashMap<Integer, Double>(); 
+		for(int i = rhs.length - 1; i>-1; i--){
+			for(int j = rhs.length - 1; j>i; j--){
+				rhs[i] -= matrix[i][j]*rhs[j]; 
+			}
+			rhs[i] /= matrix[i][i];
+			solution.put(i, rhs[i]);
+		}
+		
+		return solution;
 	}
 }
