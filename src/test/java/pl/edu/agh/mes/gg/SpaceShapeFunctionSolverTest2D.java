@@ -37,13 +37,13 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 
 			@Override
 			public double computeValue(double x, double y) {
-				return 2; 
+				return (1-x)*(1-y); 
 			}
 			
 		};
 		
 		MatrixGenerator matrixGenerator = new MatrixGenerator(); 
-		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, 0, 0, 1,f);
+		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -255, 0, 256,f);
 		
 		Counter counter = new Counter(this);
 
@@ -190,19 +190,55 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 
 		counter.release();
 		
+		BS bs7 = new BS(p3a.m_vertex, counter);
+		BS bs8 = new BS(p3b.m_vertex, counter);
+		BS bs9 = new BS(p3c.m_vertex, counter);
+		BS bs10 = new BS(p3d.m_vertex, counter);
+		BS bs11 = new BS(p3e.m_vertex, counter);
+		BS bs12 = new BS(p3f.m_vertex, counter);
+		BS bs13 = new BS(p3g.m_vertex, counter);
+		BS bs14 = new BS(p3h.m_vertex, counter);
+		
+		bs7.start();
+		bs8.start();
+		bs9.start();
+		bs10.start();		
+		bs11.start();
+		bs12.start();
+		bs13.start();
+		bs14.start();
+		
+		counter.release();
+		
 		Map<Integer, Double> solution =
 				MatrixUtils.getSolutionThroughBackwardSubstitution(matrixGenerator.getMatrix(), matrixGenerator.getRhs());
 		for(Tier tier : tierList){
 			tier.setCoefficients(solution);
-			tier.checkInterpolationCorectness(f);
+			//tier.checkInterpolationCorectness(f);
 		}
 		
-		Map<Integer, Double> map = null; 
-		if(map.size() == solution.size()){
-			for(int key : map.keySet()){
-				if(solution.containsKey(key) && Math.abs((solution.get(key) - map.get(key))) < 0.000001 )
+		Map<Integer, Double> alternativeSolutionMap = new HashMap<Integer, Double>(); 
+		bs7.addCoefficients(alternativeSolutionMap, 0);
+		bs8.addCoefficients(alternativeSolutionMap, 5);
+		bs9.addCoefficients(alternativeSolutionMap, 8);
+		bs10.addCoefficients(alternativeSolutionMap, 11);
+		bs11.addCoefficients(alternativeSolutionMap, 14);
+		bs12.addCoefficients(alternativeSolutionMap, 17);
+		bs13.addCoefficients(alternativeSolutionMap, 20);
+		bs14.addCoefficients(alternativeSolutionMap, 23);
+		
+		MatrixUtils.printMatrix(matrixGenerator.getMatrix(), matrixGenerator.getRhs());
+		
+		if(alternativeSolutionMap.size() == solution.size()){
+			for(int key : alternativeSolutionMap.keySet()){
+				if(solution.containsKey(key) && Math.abs((solution.get(key) - alternativeSolutionMap.get(key))) < 0.000001 ){
+					System.out.println("ok " + key + " " + solution.get(key) + " " + alternativeSolutionMap.get(key));
 					continue;
-				throw new RuntimeException("wrong coefficient " + key + " " + ((solution.get(key) - map.get(key))));
+				}
+				else{
+					System.out.println("zle " + key + " " + solution.get(key) + " " + alternativeSolutionMap.get(key));
+				}
+				//throw new RuntimeException("wrong coefficient " + key + " " + ((solution.get(key) - alternativeSolutionMap.get(key))));
 			}
 		}
 		else

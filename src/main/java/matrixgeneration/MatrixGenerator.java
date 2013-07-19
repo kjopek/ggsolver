@@ -50,10 +50,10 @@ public class MatrixGenerator {
 		}
 		
 		x = x + s; 
-		y = y - s / 2.0;
-		s = s /2.0;
+		y = y - s;
+		//s = s /2.0;
 		element = new Element(new double[] { x, y}, s, Position.BOT_RIGHT);
-		elements = element.createLastTier(nr);
+		element.createLastTier(nr);
 		elementsList.add(element);
 		
 		int matrixSize = 3 + nrOfTiers*3 + 2 + 1; 

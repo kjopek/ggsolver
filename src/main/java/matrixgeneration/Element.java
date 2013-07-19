@@ -3,6 +3,8 @@ package matrixgeneration;
 import java.util.Map;
 import java.util.Random;
 
+import pl.edu.agh.mes.gg.MatrixUtils;
+
 
 public class Element {
 	
@@ -23,39 +25,15 @@ public class Element {
 		
 		public double computeValue(double x, double y){
 			
-			switch(position){
-			case BOT_LEFT:
-				return (1-(x-botLeftCoord[0])/size)*(y-botLeftCoord[1])/size;
-			case TOP_LEFT:
-				return (1-(x-botLeftCoord[0])/size)*(y-botLeftCoord[1])/size;
-			case TOP_RIGHT:
-				return (1-(x-botLeftCoord[0])/size)*(y-botLeftCoord[1])/size;
-			case BOT_RIGHT:
-				return (1-(x-botLeftCoord[0])/size)*(y-botLeftCoord[1])/size;
-			default:
-				throw new RuntimeException();
-			}
+			return (1-(x-botLeftCoord[0])/size)*(y-botLeftCoord[1])/size;
 		}
 	};
 	
 	private DoubleArgFunction topRightFunction = new DoubleArgFunction(){
 		
 		public double computeValue(double x, double y){
-			
-			switch(position){
-			case BOT_LEFT:
-				return (x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size;
-			case TOP_LEFT:
-				return (x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size;
-			case TOP_RIGHT:
-				return (x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size;
-			case BOT_RIGHT:
-				return (x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size;
-			default:
-				throw new RuntimeException();
-			}
-			
-			
+
+			return (x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size;			
 		}
 		
 	};
@@ -64,19 +42,7 @@ public class Element {
 		
 		public double computeValue(double x, double y){
 			
-			switch(position){
-			case BOT_LEFT:
-				return (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size);
-			case TOP_LEFT:
-				return (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size);
-			case TOP_RIGHT:
-				return (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size);
-			case BOT_RIGHT:
-				return (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size);
-			default:
-				throw new RuntimeException();
-			}
-			
+			return (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size);
 		}
 		
 	};
@@ -90,6 +56,75 @@ public class Element {
 		
 	};
 	
+	private DoubleArgFunction leftFunction = new DoubleArgFunction(){
+		
+		public double computeValue(double x, double y){
+			double value = (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size)*(y-botLeftCoord[1])/size;
+			switch(position){
+			case BOT_LEFT:
+				if(firstTier)
+					return value; 
+				return (value + topLeftFunction.computeValue(x, y))/4.0;
+			case TOP_LEFT:
+				if(firstTier)
+					return value; 
+				return (value + botLeftFunction.computeValue(x, y))/4.0;
+			case TOP_RIGHT:
+				return value; 
+			case BOT_RIGHT:
+				return value; 
+			default:
+				throw new RuntimeException();
+			}
+			 
+		}
+		
+	};
+	
+	private DoubleArgFunction topFunction = new DoubleArgFunction(){
+		
+		public double computeValue(double x, double y){
+			double value = (1-(x-botLeftCoord[0])/size)*(x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size;
+			switch(position){
+			case BOT_LEFT:
+				return value;
+			case TOP_LEFT:
+				if(firstTier)
+					return value; 
+				return (value + topRightFunction.computeValue(x, y))/4.0;
+			case TOP_RIGHT:
+				if(firstTier)
+					return value; 
+				return (value + topLeftFunction.computeValue(x, y))/4.0;
+			case BOT_RIGHT:
+				return value; 
+			default:
+				throw new RuntimeException(); 
+			}
+			
+		}
+	};
+	
+	private DoubleArgFunction rightFunction = new DoubleArgFunction(){
+		
+		public double computeValue(double x, double y){
+			return (x-botLeftCoord[0])/size*(1-(y-botLeftCoord[1])/size)*(y-botLeftCoord[1])/size;
+		}
+	};
+	
+	private DoubleArgFunction botFunction = new DoubleArgFunction(){
+		
+		public double computeValue(double x, double y){
+			return (1-(x-botLeftCoord[0])/size)*(x-botLeftCoord[0])/size*(1-(y-botLeftCoord[1])/size);
+		}
+	};
+	
+	private DoubleArgFunction interiorFunction = new DoubleArgFunction(){
+		public double computeValue(double x, double y){
+			return (1-(x-botLeftCoord[0])/size)*(x-botLeftCoord[0])/size*(1-(y-botLeftCoord[1])/size)*(y-botLeftCoord[1])/size;
+		}
+	};
+	
 	public Element(double[] botLeftCoord, double size, Position position){
 		this.botLeftCoord = botLeftCoord; 
 		this.size = size; 
@@ -99,6 +134,7 @@ public class Element {
 		this.topLeftVertexNr = -1; 
 		this.topRightVertexNr = -1; 
 		this.botRightVertexNr = -1; 
+		System.out.println(botLeftCoord[0] + " " + botLeftCoord[1] + " " + size);
 	}
 	
 	
@@ -187,9 +223,31 @@ public class Element {
 		this.topRightVertexNr = nr + 2; 
 		this.botRightVertexNr = nr + 3;
 		
-		this.botLeftCoord[1] -= size; 
-		this.size*=2; 
-		this.position = Position.BOT_RIGHT;
+		
+//		this.botLeftCoord[1] -= size; 
+//		this.size*=2; 
+//		this.position = Position.BOT_RIGHT;
+		System.out.println("size " + size);
+		System.out.println(botLeftVertexNr);
+		System.out.println(topLeftVertexNr);
+		System.out.println(topRightVertexNr);
+		System.out.println(botRightVertexNr);
+		System.out.println(botLeftCoord[0]);
+		System.out.println(botLeftCoord[1] + " Kkkk");
+		
+		double  m[][] = new double[4][4];
+		double r[] = new double[4];
+		fillTierMatrix(m, r, new DoubleArgFunction() {
+			
+			@Override
+			public double computeValue(double x, double y) {
+				
+				return x*y;
+			}
+		}, 26);
+		System.out.println("test ---------------");
+		MatrixUtils.printMatrix(m, r);
+		System.out.println("test ---------------");
 		return new Element[0];
 		
 		
