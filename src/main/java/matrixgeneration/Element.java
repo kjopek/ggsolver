@@ -319,8 +319,8 @@ public class Element {
 			result += botRightFunction.computeValue(randomXWithinElement, randomYWithinElement)*
 					this.nodeNrCoefficientMap.get(this.botRightVertexNr);
 			
-			if( Math.abs((result - f.computeValue(randomXWithinElement, randomYWithinElement)))  > 0.000001){
-				throw new RuntimeException("Wrong for shape function space input function solution!");
+			if( Math.abs((result - f.computeValue(randomXWithinElement, randomYWithinElement)))  > 0.0001){
+				throw new RuntimeException("Wrong for shape function space input function solution! " + (result - f.computeValue(randomXWithinElement, randomYWithinElement)));
 			}
 		}
 		

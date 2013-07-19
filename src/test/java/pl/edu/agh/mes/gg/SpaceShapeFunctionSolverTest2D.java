@@ -35,13 +35,13 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 
 			@Override
 			public double computeValue(double x, double y) {
-				return 1; 
+				return 2; 
 			}
 			
 		};
 		
 		MatrixGenerator matrixGenerator = new MatrixGenerator(); 
-		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1, -1, 1,f);
+		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, 0, 0, 1,f);
 		
 		Counter counter = new Counter(this);
 
@@ -101,7 +101,7 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 		p3h.start();
 		counter.release();
 		
-		/* generating matrix here? */
+		
 		A1 a1 = new A1(p3a.m_vertex, counter, tierList.get(0));
 		A a2 = new A(p3b.m_vertex, counter, tierList.get(1));
 		A a3 = new A(p3c.m_vertex, counter, tierList.get(2));
@@ -188,31 +188,13 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 
 		counter.release();
 		
-		Map<Integer, Double> nodeNrCoefficientMap = new HashMap<Integer, Double>();
-		for(int i = 0; i < 3 + nrOfTiers*3 + 2 + 1; i++){
-			nodeNrCoefficientMap.put(i, 1.0);
-		}
-		
+		Map<Integer, Double> solution =
+				MatrixUtils.getSolutionThroughBackwardSubstitution(matrixGenerator.getMatrix(), matrixGenerator.getRhs());
 		for(Tier tier : tierList){
-			tier.setCoefficients(nodeNrCoefficientMap);
-			tier.checkInterpolationCorectness(new DoubleArgFunction() {
-				
-				@Override
-				public double computeValue(double x, double y) {
-					return 1;
-				}
-			});
+			tier.setCoefficients(solution);
+			tier.checkInterpolationCorectness(f);
 		}
 		
-		// check correctness of solution, rhs should contain only 1.0
-		MatrixUtils.printMatrix(matrixGenerator.getMatrix(), matrixGenerator.getRhs());
-		for (int i=0;i<6;i++) {
-			assertTrue(Math.abs(p2c.m_vertex.m_b[i]-1.0) < epsilon);
-			assertTrue(Math.abs(p2d.m_vertex.m_b[i]-1.0) < epsilon);
-			assertTrue(Math.abs(p2e.m_vertex.m_b[i]-1.0) < epsilon);
-			assertTrue(Math.abs(p2f.m_vertex.m_b[i]-1.0) < epsilon);
-			
-		}
 		
 	}
 
