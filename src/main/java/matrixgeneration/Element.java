@@ -13,6 +13,11 @@ public class Element {
 	private int topRightVertexNr; 
 	private int botLeftVertexNr; 
 	private int botRightVertexNr;
+	private int leftEdgeNr; 
+	private int topEdgeNr; 
+	private int rightEdgeNr; 
+	private int botEdgeNr; 
+	private int interiorNr; 
 	private Map<Integer, Double> nodeNrCoefficientMap;
 	
 	private boolean firstTier; 
@@ -133,7 +138,12 @@ public class Element {
 		this.botLeftVertexNr = -1; 
 		this.topLeftVertexNr = -1; 
 		this.topRightVertexNr = -1; 
-		this.botRightVertexNr = -1; 
+		this.botRightVertexNr = -1;
+		this.leftEdgeNr = -1; 
+		this.topEdgeNr = -1; 
+		this.rightEdgeNr = -1; 
+		this.botEdgeNr = -1; 
+		this.interiorNr = -1; 
 	}
 	
 	
@@ -151,21 +161,42 @@ public class Element {
 		Element rightElement = new Element(rightElementBotLeftCoord, size, Position.TOP_RIGHT);
 		Element botElement = new Element(botElementBotLeftCoord, size, Position.BOT_LEFT);
 		
-		this.topLeftVertexNr = nr + 1; 
+		this.topLeftVertexNr = nr + 2; 
 		this.botLeftVertexNr = nr; 
-		this.topRightVertexNr = nr + 2; 
-		this.botRightVertexNr = nr + 4; 
+		this.topRightVertexNr = nr + 4; 
+		this.botRightVertexNr = nr + 14;
+		
+		this.leftEdgeNr = nr + 1; 
+		this.topEdgeNr = nr + 3; 
+		this.rightEdgeNr = nr + 9; 
+		this.botEdgeNr = nr + 7;
+		
+		this.interiorNr = nr + 8; 
 		
 		botElement.setBotLeftVertexNr(nr);
-		botElement.setTopLeftVertexNr(nr + 1);
-		botElement.setBotRightVertexNr(nr + 3);
-		botElement.setTopRightVertexNr(nr + 4);
+		botElement.setTopLeftVertexNr(nr + 2);
+		botElement.setBotRightVertexNr(nr + 12);
+		botElement.setTopRightVertexNr(nr + 14);
+		
+		botElement.setLeftEdgeNr(nr + 1);
+		botElement.setTopEdgeNr(nr + 7);
+		botElement.setRightEdgeNr(nr + 13);
+		botElement.setBotEdgeNr(nr + 5);
+		
+		botElement.setInteriorNr(nr + 6);
 		
 		
-		rightElement.setTopLeftVertexNr(nr + 1);
-		rightElement.setTopRightVertexNr(nr + 2);
-		rightElement.setBotLeftVertexNr(nr + 4);
-		rightElement.setBotRightVertexNr(nr + 5);
+		rightElement.setTopLeftVertexNr(nr + 2);
+		rightElement.setTopRightVertexNr(nr + 4);
+		rightElement.setBotLeftVertexNr(nr + 14);
+		rightElement.setBotRightVertexNr(nr + 16);
+		
+		rightElement.setLeftEdgeNr(nr + 9);
+		rightElement.setTopEdgeNr(nr + 3);
+		rightElement.setRightEdgeNr(nr + 11);
+		rightElement.setBotEdgeNr(nr + 15);
+		
+		rightElement.setInteriorNr(nr + 10);
 		
 		Element[] elements = new Element[2];
 		elements[0] = rightElement; 
@@ -192,21 +223,41 @@ public class Element {
 		rightElement.firstTier = true; 
 		botElement.firstTier = true; 
 		
-		this.topLeftVertexNr = nr + 2; 
-		this.botLeftVertexNr = nr + 1; 
-		this.topRightVertexNr = nr + 3; 
-		this.botRightVertexNr = nr + 6; 
+		this.topLeftVertexNr = nr + 4; 
+		this.botLeftVertexNr = nr + 2; 
+		this.topRightVertexNr = nr + 6; 
+		this.botRightVertexNr = nr + 18; 
+		
+		this.leftEdgeNr = nr + 3; 
+		this.topEdgeNr = nr + 5; 
+		this.rightEdgeNr = nr + 13; 
+		this.botEdgeNr = nr + 11;
+		
+		this.interiorNr = nr + 12; 
 		
 		botElement.setBotLeftVertexNr(nr);
-		botElement.setTopLeftVertexNr(nr + 1);
-		botElement.setBotRightVertexNr(nr + 5);
-		botElement.setTopRightVertexNr(nr + 6);
+		botElement.setTopLeftVertexNr(nr + 2);
+		botElement.setBotRightVertexNr(nr + 16);
+		botElement.setTopRightVertexNr(nr + 18);
 		
+		botElement.setLeftEdgeNr(nr + 1);
+		botElement.setTopEdgeNr(nr + 11);
+		botElement.setRightEdgeNr(nr + 17);
+		botElement.setBotEdgeNr(nr + 9);
 		
-		rightElement.setTopLeftVertexNr(nr + 3);
-		rightElement.setTopRightVertexNr(nr + 4);
-		rightElement.setBotLeftVertexNr(nr + 6);
-		rightElement.setBotRightVertexNr(nr + 7);
+		botElement.setInteriorNr(nr + 10);
+		
+		rightElement.setTopLeftVertexNr(nr + 6);
+		rightElement.setTopRightVertexNr(nr + 8);
+		rightElement.setBotLeftVertexNr(nr + 18);
+		rightElement.setBotRightVertexNr(nr + 20);
+		
+		rightElement.setLeftEdgeNr(nr + 13);
+		rightElement.setTopEdgeNr(nr + 7);
+		rightElement.setRightEdgeNr(nr + 15);
+		rightElement.setBotEdgeNr(nr + 19);
+		
+		rightElement.setInteriorNr(nr + 14);
 		
 		Element[] elements = new Element[2];
 		elements[0] = rightElement; 
@@ -217,10 +268,17 @@ public class Element {
 	
 	public Element[] createLastTier(int nr){
 		
-		this.topLeftVertexNr = nr + 1; 
+		this.topLeftVertexNr = nr + 2; 
 		this.botLeftVertexNr = nr; 
-		this.topRightVertexNr = nr + 2; 
-		this.botRightVertexNr = nr + 3;
+		this.topRightVertexNr = nr + 4; 
+		this.botRightVertexNr = nr + 8;
+		
+		this.leftEdgeNr = nr + 1; 
+		this.topEdgeNr = nr + 3; 
+		this.rightEdgeNr = nr + 7; 
+		this.botEdgeNr = nr + 5; 
+		
+		this.interiorNr = nr + 6; 
 		
 
 		double  m[][] = new double[4][4];
@@ -401,6 +459,36 @@ public class Element {
 	public void setBotRightVertexNr(int botRightVertexNr) {
 		this.botRightVertexNr = botRightVertexNr;
 	} 
+	public int getLeftEdgeNr() {
+		return leftEdgeNr;
+	}
+	public void setLeftEdgeNr(int leftEdgeNr) {
+		this.leftEdgeNr = leftEdgeNr;
+	}
+	public int getTopEdgeNr() {
+		return topEdgeNr;
+	}
+	public void setTopEdgeNr(int topEdgeNr) {
+		this.topEdgeNr = topEdgeNr;
+	}
+	public int getRightEdgeNr() {
+		return rightEdgeNr;
+	}
+	public void setRightEdgeNr(int rightEdgeNr) {
+		this.rightEdgeNr = rightEdgeNr;
+	}
+	public int getBotEdgeNr() {
+		return botEdgeNr;
+	}
+	public void setBotEdgeNr(int botEdgeNr) {
+		this.botEdgeNr = botEdgeNr;
+	}
+	public int getInteriorNr() {
+		return interiorNr;
+	}
+	public void setInteriorNr(int interiorNr) {
+		this.interiorNr = interiorNr;
+	}
 	public double[] getBotLeftCoord() {
 		return botLeftCoord;
 	}
