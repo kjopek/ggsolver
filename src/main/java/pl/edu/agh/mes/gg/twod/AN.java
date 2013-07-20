@@ -18,38 +18,48 @@ public class AN extends Production {
 	public Vertex apply(Vertex T) {
 		  System.out.println("AN");
 		  
-		  double [][] data = new double[21][21];
+		  double [][] matrix = new double[21][21];
 		  double [] rhs = new double[21];
 
+		  
 		  for (int i=0; i<17; i++) {
 			  for (int j=0; j<17; j++) {
-				  data[i+4][j+4] = m_tier.getMatrix()[i][j]; 
+				  matrix[i+4][j+4] = m_tier.getMatrix()[i][j]; 
 			  }
 			  rhs[i+4] = m_tier.getRhs()[i];
 		  }
-		  
-		  for (int i=0;i<6;i++) {
-			  data[0][i+1] = m_tier.getMatrix()[6][i];
-			  data[1]
-			  data[i+1][0] = m_tier.getMatrix()[i][6];
+
+		  for (int i=0;i<4;i++) {
+			  for (int j=0;j<17;j++) {
+				  matrix[i][j+4] = m_tier.getMatrix()[i+17][j+4];
+				  matrix[j+4][i] = m_tier.getMatrix()[j][i+17];
+			  }
 		  }
-		  data[0][0] = m_tier.getMatrix()[6][6];
-		  rhs[0] = m_tier.getRhs()[6];
+		  
+		  for (int i=0; i<4; i++) {
+			  for (int j=0; j<4; j++) {
+				  matrix[i][j] = m_tier.getMatrix()[i+17][j+17];
+			  }
+		  }
 		  
 		  
-		  MatrixUtils.eliminate(1, data, rhs);
 		  
-		  T.m_a = new double[6][6];
-		  T.m_b = new double[6];
+		  MatrixUtils.eliminate(4, matrix, rhs);
+		  
+		  T.m_a = new double[21][21];
+		  T.m_b = new double[21];
 		  
 		  // copy out matrix
-		  for (int i=1; i<7; i++) {
-			  for (int j=1; j<7; j++) {
-				  T.m_a[i-1][j-1] = data[i][j];
+		  for (int i=0; i<17; i++) {
+			  for (int j=0; j<7; j++) {
+				  T.m_a[i][j] = matrix[i+4][j+4];
 			  }
-			  T.m_b[i-1] = rhs[i];
+			  T.m_b[i] = rhs[i+4];
 		  }
 		  		  
+		  T.orig_matrix = matrix;
+		  T.orig_rhs = rhs;
+		  
 		  return T;
 	}
 	

@@ -51,12 +51,8 @@ public class A1 extends Production{
 		  
 		  MatrixUtils.swapRows(3, 4, matrix, rhs);
 
-		  
-
 		  // pre-processing
 		  MatrixUtils.eliminate(5, matrix, rhs);
-		  System.out.println("========");
-		  MatrixUtils.printMatrix(matrix, rhs);
 		  
 		  // copy out eliminated matrix
 		  for (int i=0; i<17; i++) {
@@ -64,7 +60,11 @@ public class A1 extends Production{
 				  T.m_a[i][j] = matrix[i+4][j+4];
 			  }
 			  T.m_b[i] = rhs[i+4];
-		  }		  
+		  }
+		  
+		  // save the original matrix with all unknowns
+		  T.orig_matrix = matrix;
+		  T.orig_rhs = rhs;
 		  
 		  return T;
 	}

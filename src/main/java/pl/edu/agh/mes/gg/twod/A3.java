@@ -45,7 +45,7 @@ public class A3 extends Production {
 				T.m_a[i][j+10] = T.m_right.m_a[i+5][j+10]; 
 				
 			}
-			T.m_b[i] = T.m_left.m_b[i+6] + T.m_right.m_b[i+5];
+			T.m_b[i] = T.m_left.m_b[i+10] + T.m_right.m_b[i+5];
 			T.m_b[i+5] = T.m_left.m_b[i+5];
 			T.m_b[i+10] = T.m_right.m_b[i+10];
 		}
