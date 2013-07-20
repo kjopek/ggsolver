@@ -32,10 +32,12 @@ public class Vertex {
 	public Vertex m_left;
 	public Vertex m_right;
 	public Vertex m_parent;
-
+	
 	//local system of equations
 	public double[][] m_a;
 	public double[] m_b;
+	public double[][] orig_matrix;
+	public double[] orig_rhs;
 
 	//methods for adding links
 	public void set_left(Vertex Left){
