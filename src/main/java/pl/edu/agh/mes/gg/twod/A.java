@@ -15,8 +15,11 @@ public class A extends Production {
 	}
 	public Vertex apply(Vertex T) {
 	  System.out.println("A");
-	  T.m_a = new double[17][17];
-	  T.m_b = new double[17];
+	  final int size = 17;
+	  
+	  T.m_a = new double[size][size];
+	  T.m_b = new double[size];
+	  
 	  for (int i=0; i<17;i++) {
 		  for (int j=0;j<17;j++) {
 			  T.m_a[i][j] = m_tier.getMatrix()[i][j];

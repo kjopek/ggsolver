@@ -19,8 +19,12 @@ public class AN extends Production {
 		  System.out.println("AN");
 		  
 		  double [][] matrix = new double[21][21];
-		  double [] rhs = new double[21];
+		  double []rhs = new double[21];
 
+		  final int size = 17;
+		  
+		  T.m_a = new double[size][size];
+		  T.m_b = new double[size];		  
 		  
 		  for (int i=0; i<17; i++) {
 			  for (int j=0; j<17; j++) {
@@ -42,13 +46,8 @@ public class AN extends Production {
 			  }
 		  }
 		  
-		  
-		  
 		  MatrixUtils.eliminate(4, matrix, rhs);
-		  
-		  T.m_a = new double[21][21];
-		  T.m_b = new double[21];
-		  
+		    
 		  // copy out matrix
 		  for (int i=0; i<17; i++) {
 			  for (int j=0; j<7; j++) {
@@ -56,7 +55,7 @@ public class AN extends Production {
 			  }
 			  T.m_b[i] = rhs[i+4];
 		  }
-		  		  
+		  
 		  T.orig_matrix = matrix;
 		  T.orig_rhs = rhs;
 		  

@@ -14,51 +14,85 @@ public class BS extends Production{
 	@Override
 	public Vertex apply(Vertex T) {
 		System.out.println("BS");
-		if(T.m_parent != null){
-			// copy previously calculated variables into rhs
+		if(T.m_parent != null) {
 			Vertex parent = T.m_parent;
-			if(T.m_parent.m_left == T){
-				for (int i=0; i<3; i++) {
-					T.m_b[i+3] = parent.m_b[i+3];
-					T.m_b[i+6] = parent.m_b[i];
-				}
-			}
-			else{
-				for (int i=0; i<3; i++) {
-					T.m_b[i+3] = parent.m_b[i];
-					T.m_b[i+6] = parent.m_b[i+6];
-				}
-			}
-			
-			// lower part of matrix [4:9]x[4:9] should be filled with 1.0 on diagonal and 0.0
-			// everywhere else
-			
-			for (int i=0; i<6;i++) {
-				for (int j=0;j<6;j++) {
-					if (i==j) {
-						T.m_a[i+3][j+3] = 1.0;
-					} else {
-						T.m_a[i+3][j+3] = 0.0;
+
+			if (T.m_a.length == 15) {
+				// copy previously calculated variables into rhs
+				if(T.m_parent.m_left == T){
+					for (int i=0; i<5; i++) {
+						T.m_b[i+5] = parent.m_b[i+5];
+						T.m_b[i+10] = parent.m_b[i];
 					}
 				}
-			}
-		}
-		
-		// run backward substitution
-		
-		for (int i=8; i>=0; i--) {
-			double sum = T.m_b[i];
-			for (int j=8;j>=i+1;j--) {
-				sum -= T.m_a[i][j] * T.m_b[j]; 
-				// "clean matrix" - this is not obligatory ;-)
-				T.m_a[i][j] = 0.0;
-			}
-			T.m_b[i] = sum / T.m_a[i][i];
+				else{
+					for (int i=0; i<5; i++) {
+						T.m_b[i+5] = parent.m_b[i];
+						T.m_b[i+10] = parent.m_b[i+10];
+					}
+				}
+				
+				
+				for (int i=0; i<10; i++) {
+					for (int j=0; j<10; j++) {
+						if (i==j) {
+							T.m_a[i+5][j+5] = 1.0;
+						} else {
+							T.m_a[i+5][j+5] = 0.0;
+						}
+					}
+					// b-s only the first 5 rows
+					MatrixUtils.backwardSubstitution(T.m_a, T.m_b, 5);
+				}
+			} else if (T.m_a.length == 17) {
+				// leaf
+				for (int i=0; i<5; i++) {
+					for (int j=0; j<5; j++) {
+						if (i == j) {
+							T.m_a[i][j] = 1.0;
+							T.m_a[i+12][j] = 1.0;
+							T.m_a[i][j+12] = 1.0;
+							T.m_a[i+12][j+12] = 1.0;
+						} else {
+							T.m_a[i][j] = 0.0;
+							T.m_a[i+12][j] = 0.0;
+							T.m_a[i][j+12] = 0.0;
+							T.m_a[i+12][j+12] = 0.0;
+						}
+					}
+					if (T.m_parent.m_left == T) {
+						T.m_b[i] = parent.m_b[i+5];
+						T.m_b[i+12] = parent.m_b[i];
+					} else {
+						T.m_b[i] = parent.m_b[i];
+						T.m_b[i+12] = parent.m_b[i+10];
+					}
+				}
+				
+				MatrixUtils.eliminate(17, T.m_a, T.m_b);
+
+				MatrixUtils.backwardSubstitution(T.m_a, T.m_b, 17);
+
+				if (T.orig_matrix != null) {
+					for (int i=0; i<17; i++) {
+						for (int j=0; j<17; j++) {
+							T.orig_matrix[i+4][j+4] = T.m_a[i][j];
+						}
+						T.orig_rhs[i+4] = T.m_b[i];
+					}
+				}
+				MatrixUtils.backwardSubstitution(T.m_a, T.m_b, 4);
+			}			
+			
+			
+		} else {		
+			// run backward substitution on full matrix (ERoot)
+			MatrixUtils.backwardSubstitution(T.m_a, T.m_b, 15);
 		}
 
 		//MatrixUtils.printMatrix(T.m_a, T.m_b);
 		
-		return T; 
+		return T;
 	}
 	
 }

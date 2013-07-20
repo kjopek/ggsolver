@@ -18,6 +18,11 @@ public class A1 extends Production{
 	public Vertex apply(Vertex T) {
 		  System.out.println("A1");
 		  
+		  final int size = 17;
+		  
+		  T.m_a = new double[size][size];
+		  T.m_b = new double[size];
+		  
 		  // XXX: do we really need this?
 		  double [][] matrix = m_tier.getMatrix().clone();
 		  double []rhs = m_tier.getRhs().clone();
