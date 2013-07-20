@@ -54,6 +54,19 @@ public class MatrixUtils {
 		
 	}
 	
+	public static void backwardSubstitution(double matrix[][], double rhs[], int startingRow) {
+		for (int i=startingRow; i>=0; i--) {
+			double sum = rhs[i];
+
+			for (int j=startingRow;j>=i+1;j--) {
+				sum -= matrix[i][j] * rhs[j]; 
+				matrix[i][j] = 0.0;
+			}
+			
+			rhs[i] = sum / matrix[i][i];
+		}
+	}
+	
 	public static void printMatrix(double matrix[][], double rhs[]) {
 		assert matrix.length == rhs.length;
 		final int N = matrix.length;
@@ -64,6 +77,5 @@ public class MatrixUtils {
 			}
 			System.out.println(String.format(" | % .15f", rhs[i]));
 		}
-		
 	}
 }
