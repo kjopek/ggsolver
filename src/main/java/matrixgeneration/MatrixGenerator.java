@@ -26,7 +26,7 @@ public class MatrixGenerator {
 		elementsList.add(element);
 		elementsList.add(elements[0]);
 		elementsList.add(elements[1]);
-		nr+=5; 
+		nr+=16; 
 		
 		double x = element.getBotLeftCoord()[0];
 		double y = element.getBotLeftCoord()[1];
@@ -43,7 +43,7 @@ public class MatrixGenerator {
 			elementsList.add(element);
 			elementsList.add(elements[0]);
 			elementsList.add(elements[1]);
-			nr+=3;
+			nr+=12;
 			
 			
 			
@@ -56,7 +56,7 @@ public class MatrixGenerator {
 		element.createLastTier(nr);
 		elementsList.add(element);
 		
-		int matrixSize = 3 + nrOfTiers*3 + 2 + 1; 
+		int matrixSize = 9 + nrOfTiers*12 + 4; 
 		matrix = new double[matrixSize][matrixSize];
 		rhs = new double[matrixSize];
 

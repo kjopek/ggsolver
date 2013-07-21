@@ -3,11 +3,11 @@ package matrixgeneration;
 
 public class GaussianQuadrature {
 
-	//private static final double[] roots = new double[] { -0.86113, -0.33998, 0.33998, 0.86113 };
-	//private static final double[] weights = new double[] { 0.34785, 0.65214, 0.65214, 0.34785 }; 
+	private static final double[] roots = new double[] { -0.86113, -0.33998, 0.33998, 0.86113 };
+	private static final double[] weights = new double[] { 0.34785, 0.65214, 0.65214, 0.34785 }; 
 	
-	private static final double[] roots = new double[] {-0.5773502691896257, 0.5773502691896257 };
-	private static final double[] weights = new double[] { 1.0, 1.0 };
+	//private static final double[] roots = new double[] {-0.5773502691896257, 0.5773502691896257 };
+	//private static final double[] weights = new double[] { 1.0, 1.0 };
 	
 	private static double revertNormalization(double x, double lower, double upper){
 		
