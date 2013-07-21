@@ -13,7 +13,6 @@ import org.junit.Test;
 import pl.edu.agh.mes.gg.twod.A;
 import pl.edu.agh.mes.gg.twod.A1;
 import pl.edu.agh.mes.gg.twod.A2;
-import pl.edu.agh.mes.gg.twod.A3;
 import pl.edu.agh.mes.gg.twod.AN;
 import pl.edu.agh.mes.gg.twod.BS;
 import pl.edu.agh.mes.gg.twod.E;
@@ -142,8 +141,8 @@ public class SolverTest2D extends Thread {
 		e4.start();
 		counter.release();
 		
-		A3 a3_1 = new A3(p2a.m_vertex, counter);
-		A3 a3_2 = new A3(p2b.m_vertex, counter);
+		A2 a3_1 = new A2(p2a.m_vertex, counter);
+		A2 a3_2 = new A2(p2b.m_vertex, counter);
 		a3_1.start();
 		a3_2.start();
 		
@@ -156,7 +155,7 @@ public class SolverTest2D extends Thread {
 		
 		counter.release();
 		
-		A3 a3_3 = new A3(p1.m_vertex, counter);
+		A2 a3_3 = new A2(p1.m_vertex, counter);
 		a3_3.start();
 		counter.release();
 		
