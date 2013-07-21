@@ -18,9 +18,9 @@ public class Tier {
 		this.botRightElement = botRightElement;
 		this.topLeftElement = topLeftElement; 
 		this.topRightElement = topRightElement;
-		
-		tierMatrix = new double[8][8];
-		rhs = new double[8];
+		/*
+		tierMatrix = new double[21][21];
+		rhs = new double[21];
 		
 		startNrAdj = botLeftElement.getBotLeftVertexNr();
 		botLeftElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj);
@@ -28,6 +28,7 @@ public class Tier {
 		if(botRightElement != null)
 			botRightElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj);
 		topRightElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj);
+		*/
 	}
 
 	public double[][] getMatrix(){

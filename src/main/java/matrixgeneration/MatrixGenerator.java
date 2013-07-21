@@ -56,7 +56,7 @@ public class MatrixGenerator {
 		element.createLastTier(nr);
 		elementsList.add(element);
 		
-		int matrixSize = 9 + nrOfTiers*12 + 3; 
+		int matrixSize = 9 + nrOfTiers*12 + 4; 
 		matrix = new double[matrixSize][matrixSize];
 		rhs = new double[matrixSize];
 

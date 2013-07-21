@@ -63,9 +63,9 @@ public class MatrixUtils {
 		
 		for (int i=0; i<N; i++) {
 			for (int j=0; j<N; j++) {
-				System.out.print(String.format("% .15f ", matrix[i][j]));
+				System.out.print(String.format(null,"% .7f ", new Object[]{matrix[i][j]}));
 			}
-			System.out.println(String.format(" | % .15f", rhs[i]));
+			System.out.println(String.format(null,"| % .7f", new Object[]{rhs[i]}));
 		}
 		
 	}
