@@ -380,7 +380,6 @@ public class Element {
 		int[] functionNumbers = new int[] {
 			botLeftVertexNr, leftEdgeNr, topLeftVertexNr, topEdgeNr, topRightVertexNr, botEdgeNr, interiorNr, rightEdgeNr, botRightVertexNr
 		};
-		System.out.println(this.botLeftVertexNr  +  " " + this.position);
 		for(int i = 0; i<9; i++){
 			DoubleArgFunctionProduct product = new DoubleArgFunctionProduct();
 			product.setFunctions(shapeFunctions[i], f);

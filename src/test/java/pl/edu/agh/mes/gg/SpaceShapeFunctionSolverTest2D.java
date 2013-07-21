@@ -43,50 +43,18 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 		};
 		
 		MatrixGenerator matrixGenerator = new MatrixGenerator();
-		System.out.println("przed");
-		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, 0, 0, 2,f);
-		System.out.println("po");
 		
-		MatrixUtils.printMatrix(matrixGenerator.getMatrix(), matrixGenerator.getRhs());
+		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, 0, 0, 2,f);
 		
 		Map<Integer, Double> solution =
 				MatrixUtils.getSolutionThroughBackwardSubstitution(matrixGenerator.getMatrix(), matrixGenerator.getRhs());
 		
-		for(Map.Entry<Integer, Double> entry : solution.entrySet()){
-			if(Math.abs(entry.getValue()) > 0.001)
-			System.out.println(entry.getKey() + " " + entry.getValue());
-		}
+		
 		for(Tier tier : tierList){
 			tier.setCoefficients(solution);
 			tier.checkInterpolationCorectness(f);
 		}
-		/*
-		Map<Integer, Double> alternativeSolutionMap = new HashMap<Integer, Double>(); 
-		bs7.addCoefficients(alternativeSolutionMap, 0);
-		bs8.addCoefficients(alternativeSolutionMap, 5);
-		bs9.addCoefficients(alternativeSolutionMap, 8);
-		bs10.addCoefficients(alternativeSolutionMap, 11);
-		bs11.addCoefficients(alternativeSolutionMap, 14);
-		bs12.addCoefficients(alternativeSolutionMap, 17);
-		bs13.addCoefficients(alternativeSolutionMap, 20);
-		bs14.addCoefficients(alternativeSolutionMap, 23);
 		
-
-		if(alternativeSolutionMap.size() == solution.size()){
-			for(int key : alternativeSolutionMap.keySet()){
-				if(solution.containsKey(key) && Math.abs((solution.get(key) - alternativeSolutionMap.get(key))) < 0.000001 ){
-					System.out.println("ok " + key + " " + solution.get(key) + " " + alternativeSolutionMap.get(key));
-				}
-				else{
-					System.out.println("zle " + key + " " + solution.get(key) + " " + alternativeSolutionMap.get(key));
-				}
-				//throw new RuntimeException("wrong coefficient " + key + " " + ((solution.get(key) - alternativeSolutionMap.get(key))));
-			}
-		}
-		else
-			throw new RuntimeException("wrong solution !");
-		
-		*/
 	}
 
 }
