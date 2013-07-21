@@ -17,7 +17,7 @@ public class A1 extends Production{
 	
 	public Vertex apply(Vertex T) {
 		  System.out.println("A1");
-		  
+
 		  final int size = 17;
 		  
 		  T.m_a = new double[size][size];
@@ -58,7 +58,7 @@ public class A1 extends Production{
 
 		  // pre-processing
 		  MatrixUtils.eliminate(5, matrix, rhs);
-		  
+		  		  
 		  // copy out eliminated matrix
 		  for (int i=0; i<17; i++) {
 			  for (int j=0;j<17;j++) {

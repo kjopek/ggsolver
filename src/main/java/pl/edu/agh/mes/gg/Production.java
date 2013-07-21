@@ -49,6 +49,7 @@ public abstract class Production extends Thread {
 
 	//vertex where the production will be applied
 	public Vertex m_vertex;
+	
 	//graph drawer
 	public GraphDrawer m_drawer;
 	//productions counter

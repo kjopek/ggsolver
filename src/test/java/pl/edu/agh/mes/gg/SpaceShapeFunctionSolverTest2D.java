@@ -1,8 +1,8 @@
 package pl.edu.agh.mes.gg;
 
-import static org.junit.Assert.assertTrue;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import matrixgeneration.DoubleArgFunction;
 import matrixgeneration.MatrixGenerator;
@@ -18,9 +18,9 @@ import pl.edu.agh.mes.gg.twod.BS;
 import pl.edu.agh.mes.gg.twod.E;
 import pl.edu.agh.mes.gg.twod.ERoot;
 
-public class SolverTest2D extends Thread {
+public class SpaceShapeFunctionSolverTest2D extends Thread {
 
-	public SolverTest2D() {
+	public SpaceShapeFunctionSolverTest2D() {
 	}
 
 	@Test
@@ -32,13 +32,13 @@ public class SolverTest2D extends Thread {
 
 			@Override
 			public double computeValue(double x, double y) {
-				return 1; 
+				return (1-x)*y;
 			}
 			
 		};
 		
 		MatrixGenerator matrixGenerator = new MatrixGenerator(); 
-		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1, -1, 1,f);
+		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, 0, 0, 1,f);
 		
 		Counter counter = new Counter(this);
 
@@ -98,7 +98,7 @@ public class SolverTest2D extends Thread {
 		p3h.start();
 		counter.release();
 		
-		/* generating matrix here? */
+		
 		A1 a1 = new A1(p3a.m_vertex, counter, tierList.get(0));
 		A a2 = new A(p3b.m_vertex, counter, tierList.get(1));
 		A a3 = new A(p3c.m_vertex, counter, tierList.get(2));
@@ -122,14 +122,15 @@ public class SolverTest2D extends Thread {
 		A2 a2_1 = new A2(p2c.m_vertex, counter);
 		A2 a2_2 = new A2(p2d.m_vertex, counter);
 		A2 a2_3 = new A2(p2e.m_vertex, counter);
-		A2 a2_4 = new A2(p2f.m_vertex, counter); 
+		A2 a2_4 = new A2(p2f.m_vertex, counter);
 		
 		a2_1.start();
 		a2_2.start();
 		a2_3.start();
 		a2_4.start();
+		
 		counter.release();
-
+		
 		E e1 = new E(p2c.m_vertex, counter);
 		E e2 = new E(p2d.m_vertex, counter);
 		E e3 = new E(p2e.m_vertex, counter);
@@ -183,7 +184,7 @@ public class SolverTest2D extends Thread {
 		bs6.start();
 
 		counter.release();
-
+		
 		BS bs7 = new BS(p3a.m_vertex, counter);
 		BS bs8 = new BS(p3b.m_vertex, counter);
 		BS bs9 = new BS(p3c.m_vertex, counter);
@@ -202,20 +203,39 @@ public class SolverTest2D extends Thread {
 		bs13.start();
 		bs14.start();
 		
-		counter.release(); 
-		// check correctness of solution, rhs should contain only 1.0
+		counter.release();
 		
-		for (int i=0;i<6;i++) {
-			assertTrue(Math.abs(p2c.m_vertex.m_b[i]-1.0) < epsilon);
-			assertTrue(Math.abs(p2d.m_vertex.m_b[i]-1.0) < epsilon);
-			assertTrue(Math.abs(p2e.m_vertex.m_b[i]-1.0) < epsilon);
-			assertTrue(Math.abs(p2f.m_vertex.m_b[i]-1.0) < epsilon);
-			
+		Map<Integer, Double> solution =
+				MatrixUtils.getSolutionThroughBackwardSubstitution(matrixGenerator.getMatrix(), matrixGenerator.getRhs());
+		for(Tier tier : tierList){
+			tier.setCoefficients(solution);
+			//tier.checkInterpolationCorectness(f);
 		}
 		
-		// extra variables are here:
-		MatrixUtils.printMatrix(p3h.m_vertex.orig_matrix, p3h.m_vertex.orig_rhs);
-		MatrixUtils.printMatrix(p3a.m_vertex.orig_matrix, p3a.m_vertex.orig_rhs);
+		Map<Integer, Double> alternativeSolutionMap = new HashMap<Integer, Double>(); 
+		bs7.addCoefficients(alternativeSolutionMap, 0);
+		bs8.addCoefficients(alternativeSolutionMap, 5);
+		bs9.addCoefficients(alternativeSolutionMap, 8);
+		bs10.addCoefficients(alternativeSolutionMap, 11);
+		bs11.addCoefficients(alternativeSolutionMap, 14);
+		bs12.addCoefficients(alternativeSolutionMap, 17);
+		bs13.addCoefficients(alternativeSolutionMap, 20);
+		bs14.addCoefficients(alternativeSolutionMap, 23);
+		
+		if(alternativeSolutionMap.size() == solution.size()){
+			for(int key : alternativeSolutionMap.keySet()){
+				if(solution.containsKey(key) && Math.abs((solution.get(key) - alternativeSolutionMap.get(key))) < 0.000001 ){
+					System.out.println("ok " + key + " " + solution.get(key) + " " + alternativeSolutionMap.get(key));
+				}
+				else{
+					System.out.println("zle " + key + " " + solution.get(key) + " " + alternativeSolutionMap.get(key));
+				}
+				//throw new RuntimeException("wrong coefficient " + key + " " + ((solution.get(key) - alternativeSolutionMap.get(key))));
+			}
+		}
+		else
+			throw new RuntimeException("wrong solution !");
+		
 		
 	}
 

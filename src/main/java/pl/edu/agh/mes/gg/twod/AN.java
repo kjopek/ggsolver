@@ -50,7 +50,7 @@ public class AN extends Production {
 		    
 		  // copy out matrix
 		  for (int i=0; i<17; i++) {
-			  for (int j=0; j<7; j++) {
+			  for (int j=0; j<17; j++) {
 				  T.m_a[i][j] = matrix[i+4][j+4];
 			  }
 			  T.m_b[i] = rhs[i+4];

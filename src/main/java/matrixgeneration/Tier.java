@@ -1,5 +1,7 @@
 package matrixgeneration;
-//test comment
+
+import java.util.Map;
+
 public class Tier {
 	
 	private Element botLeftElement; 
@@ -48,7 +50,22 @@ public class Tier {
 			if(i+startNrAdj < rhs.length)
 				rhs[i+startNrAdj] += this.rhs[i]; 
 		
-		
+	}
+	
+	public void setCoefficients(Map<Integer, Double> nodeNrCoefficientMap){
+		botLeftElement.setCoefficients(nodeNrCoefficientMap);
+		topLeftElement.setCoefficients(nodeNrCoefficientMap);
+		topRightElement.setCoefficients(nodeNrCoefficientMap);
+		if(botRightElement != null)
+			botRightElement.setCoefficients(nodeNrCoefficientMap);
+	}
+	
+	public void checkInterpolationCorectness(DoubleArgFunction f){
+		botLeftElement.checkInterpolationCorectness(f);
+		topLeftElement.checkInterpolationCorectness(f);
+		topRightElement.checkInterpolationCorectness(f);
+		if(botRightElement != null)
+			botRightElement.checkInterpolationCorectness(f);
 	}
 	
 	

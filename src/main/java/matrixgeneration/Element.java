@@ -1,5 +1,10 @@
 package matrixgeneration;
 
+import java.util.Map;
+import java.util.Random;
+
+import pl.edu.agh.mes.gg.MatrixUtils;
+
 
 public class Element {
 	
@@ -8,6 +13,7 @@ public class Element {
 	private int topRightVertexNr; 
 	private int botLeftVertexNr; 
 	private int botRightVertexNr;
+	private Map<Integer, Double> nodeNrCoefficientMap;
 	
 	private boolean firstTier; 
 	
@@ -19,45 +25,15 @@ public class Element {
 		
 		public double computeValue(double x, double y){
 			
-			switch(position){
-			case BOT_LEFT:
-				//if(!firstTier)
-					//return (1-(x-botLeftCoord[0])/size)*(y-botLeftCoord[1])/size/2.0;
-				return (1-(x-botLeftCoord[0])/size)*(y-botLeftCoord[1])/size;
-			case TOP_LEFT:
-				return (1-(x-botLeftCoord[0])/size)*(y-botLeftCoord[1])/size;
-			case TOP_RIGHT:
-				//if(!firstTier)
-					//return (1-(x-botLeftCoord[0])/size)*(y-botLeftCoord[1])/size/2.0;
-				return (1-(x-botLeftCoord[0])/size)*(y-botLeftCoord[1])/size;
-			case BOT_RIGHT:
-				return (1-(x-botLeftCoord[0])/size)*(y-botLeftCoord[1])/size;
-			default:
-				throw new RuntimeException();
-			}
+			return (1-(x-botLeftCoord[0])/size)*(y-botLeftCoord[1])/size;
 		}
 	};
 	
 	private DoubleArgFunction topRightFunction = new DoubleArgFunction(){
 		
 		public double computeValue(double x, double y){
-			
-			switch(position){
-			case BOT_LEFT:
-				return (x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size;
-			case TOP_LEFT:
-				//if(!firstTier)
-					//return (x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size/2.0;
-				return (x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size;
-			case TOP_RIGHT:
-				return (x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size;
-			case BOT_RIGHT:
-				return (x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size;
-			default:
-				throw new RuntimeException();
-			}
-			
-			
+
+			return (x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size;			
 		}
 		
 	};
@@ -66,21 +42,7 @@ public class Element {
 		
 		public double computeValue(double x, double y){
 			
-			switch(position){
-			case BOT_LEFT:
-				return (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size);
-			case TOP_LEFT:
-				//if(!firstTier)
-					//return (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size)/2.0;
-				return (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size);
-			case TOP_RIGHT:
-				return (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size);
-			case BOT_RIGHT:
-				return (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size);
-			default:
-				throw new RuntimeException();
-			}
-			
+			return (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size);
 		}
 		
 	};
@@ -92,6 +54,75 @@ public class Element {
 			return (x-botLeftCoord[0])/size*(1-(y-botLeftCoord[1])/size);
 		}
 		
+	};
+	
+	private DoubleArgFunction leftFunction = new DoubleArgFunction(){
+		
+		public double computeValue(double x, double y){
+			double value = (1-(x-botLeftCoord[0])/size)*(1-(y-botLeftCoord[1])/size)*(y-botLeftCoord[1])/size;
+			switch(position){
+			case BOT_LEFT:
+				if(firstTier)
+					return value; 
+				return (value + topLeftFunction.computeValue(x, y))/4.0;
+			case TOP_LEFT:
+				if(firstTier)
+					return value; 
+				return (value + botLeftFunction.computeValue(x, y))/4.0;
+			case TOP_RIGHT:
+				return value; 
+			case BOT_RIGHT:
+				return value; 
+			default:
+				throw new RuntimeException();
+			}
+			 
+		}
+		
+	};
+	
+	private DoubleArgFunction topFunction = new DoubleArgFunction(){
+		
+		public double computeValue(double x, double y){
+			double value = (1-(x-botLeftCoord[0])/size)*(x-botLeftCoord[0])/size*(y-botLeftCoord[1])/size;
+			switch(position){
+			case BOT_LEFT:
+				return value;
+			case TOP_LEFT:
+				if(firstTier)
+					return value; 
+				return (value + topRightFunction.computeValue(x, y))/4.0;
+			case TOP_RIGHT:
+				if(firstTier)
+					return value; 
+				return (value + topLeftFunction.computeValue(x, y))/4.0;
+			case BOT_RIGHT:
+				return value; 
+			default:
+				throw new RuntimeException(); 
+			}
+			
+		}
+	};
+	
+	private DoubleArgFunction rightFunction = new DoubleArgFunction(){
+		
+		public double computeValue(double x, double y){
+			return (x-botLeftCoord[0])/size*(1-(y-botLeftCoord[1])/size)*(y-botLeftCoord[1])/size;
+		}
+	};
+	
+	private DoubleArgFunction botFunction = new DoubleArgFunction(){
+		
+		public double computeValue(double x, double y){
+			return (1-(x-botLeftCoord[0])/size)*(x-botLeftCoord[0])/size*(1-(y-botLeftCoord[1])/size);
+		}
+	};
+	
+	private DoubleArgFunction interiorFunction = new DoubleArgFunction(){
+		public double computeValue(double x, double y){
+			return (1-(x-botLeftCoord[0])/size)*(x-botLeftCoord[0])/size*(1-(y-botLeftCoord[1])/size)*(y-botLeftCoord[1])/size;
+		}
 	};
 	
 	public Element(double[] botLeftCoord, double size, Position position){
@@ -191,9 +222,17 @@ public class Element {
 		this.topRightVertexNr = nr + 2; 
 		this.botRightVertexNr = nr + 3;
 		
-		this.botLeftCoord[1] -= size; 
-		this.size*=2; 
-		this.position = Position.BOT_RIGHT;
+
+		double  m[][] = new double[4][4];
+		double r[] = new double[4];
+		fillTierMatrix(m, r, new DoubleArgFunction() {
+			
+			@Override
+			public double computeValue(double x, double y) {
+				
+				return x*y;
+			}
+		}, 26);
 		return new Element[0];
 		
 		
@@ -296,6 +335,38 @@ public class Element {
 		rhs[topRightVertexNr] += GaussianQuadrature.definiteDoubleIntegral(botLeftCoord[0], botLeftCoord[0] + size,
 				botLeftCoord[1], botLeftCoord[1] + size, product);
 
+		
+	}
+	
+	public void setCoefficients(Map<Integer, Double> nodeNrCoefficientMap){
+		this.nodeNrCoefficientMap = nodeNrCoefficientMap;
+	}
+	
+	public void checkInterpolationCorectness(DoubleArgFunction f){
+		Random random = new Random();
+		
+		double x = this.botLeftCoord[0];
+		double y = this.botLeftCoord[1]; 
+		
+		for(int i = 0; i<5; i++){
+			double randomXWithinElement = x + random.nextDouble()*size; 
+			double randomYWithinElement = y + random.nextDouble()*size; 
+			
+			
+			double result = topLeftFunction.computeValue(randomXWithinElement, randomYWithinElement)*
+					this.nodeNrCoefficientMap.get(this.topLeftVertexNr);
+			result += botLeftFunction.computeValue(randomXWithinElement, randomYWithinElement)*
+					this.nodeNrCoefficientMap.get(this.botLeftVertexNr);
+			result += topRightFunction.computeValue(randomXWithinElement, randomYWithinElement)*
+					this.nodeNrCoefficientMap.get(this.topRightVertexNr);
+			result += botRightFunction.computeValue(randomXWithinElement, randomYWithinElement)*
+					this.nodeNrCoefficientMap.get(this.botRightVertexNr);
+			
+			if( Math.abs((result - f.computeValue(randomXWithinElement, randomYWithinElement)))  > 0.0001){
+				throw new RuntimeException("Wrong for shape function space input function solution! " + (result - f.computeValue(randomXWithinElement, randomYWithinElement)));
+			}
+		}
+		
 		
 	}
 	
