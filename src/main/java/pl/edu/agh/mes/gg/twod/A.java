@@ -4,6 +4,7 @@ import matrixgeneration.Tier;
 import pl.edu.agh.mes.gg.Counter;
 import pl.edu.agh.mes.gg.Production;
 import pl.edu.agh.mes.gg.Vertex;
+import pl.edu.agh.mes.gg.MatrixUtils;
 
 public class A extends Production {
 	public A (Vertex Vert,Counter Count){
@@ -15,10 +16,6 @@ public class A extends Production {
 	}
 	public Vertex apply(Vertex T) {
 	  System.out.println("A");
-	  final int size = 17;
-	  
-	  T.m_a = new double[size][size];
-	  T.m_b = new double[size];
 	  
 	  for (int i=0; i<17;i++) {
 		  for (int j=0;j<17;j++) {
@@ -26,6 +23,9 @@ public class A extends Production {
 		  }
 		  T.m_b[i] = m_tier.getRhs()[i];
 	  }
+	  
+	  
 	  return T;
+	  
 	}
 }

@@ -48,17 +48,11 @@ public class BS extends Production{
 			} else if (T.m_a.length == 17) {
 				// leaf
 				for (int i=0; i<5; i++) {
-					for (int j=0; j<5; j++) {
+					for (int j=0; j<17; j++) {
 						if (i == j) {
 							T.m_a[i][j] = 1.0;
-							T.m_a[i+12][j] = 1.0;
-							T.m_a[i][j+12] = 1.0;
-							T.m_a[i+12][j+12] = 1.0;
 						} else {
 							T.m_a[i][j] = 0.0;
-							T.m_a[i+12][j] = 0.0;
-							T.m_a[i][j+12] = 0.0;
-							T.m_a[i+12][j+12] = 0.0;
 						}
 					}
 					if (T.m_parent.m_left == T) {
@@ -70,9 +64,19 @@ public class BS extends Production{
 					}
 				}
 				
+				for (int i=12; i<17; i++) {
+					for (int j=0; j<17; j++) {
+						if (i == j) {
+							T.m_a[i][j] = 1.0;
+						} else {
+							T.m_a[i][j] = 0.0;
+						}
+					}
+				}
+				
 				MatrixUtils.eliminate(17, T.m_a, T.m_b);
 
-				MatrixUtils.backwardSubstitution(T.m_a, T.m_b, 17);
+				MatrixUtils.backwardSubstitution(T.m_a, T.m_b, 16);
 
 				if (T.orig_matrix != null) {
 					for (int i=0; i<17; i++) {
@@ -81,14 +85,14 @@ public class BS extends Production{
 						}
 						T.orig_rhs[i+4] = T.m_b[i];
 					}
+					MatrixUtils.backwardSubstitution(T.orig_matrix, T.orig_rhs, 4);
 				}
-				MatrixUtils.backwardSubstitution(T.m_a, T.m_b, 4);
 			}			
 			
 			
 		} else {		
 			// run backward substitution on full matrix (ERoot)
-			MatrixUtils.backwardSubstitution(T.m_a, T.m_b, 15);
+			MatrixUtils.backwardSubstitution(T.m_a, T.m_b, 14);
 		}
 
 		return T;

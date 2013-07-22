@@ -32,7 +32,7 @@ public class SolverTest2D extends Thread {
 
 			@Override
 			public double computeValue(double x, double y) {
-				return 1; 
+				return x*(1-y); 
 			}
 			
 		};
@@ -99,6 +99,7 @@ public class SolverTest2D extends Thread {
 		counter.release();
 		
 		/* generating matrix here? */
+		
 		A1 a1 = new A1(p3a.m_vertex, counter, tierList.get(0));
 		A a2 = new A(p3b.m_vertex, counter, tierList.get(1));
 		A a3 = new A(p3c.m_vertex, counter, tierList.get(2));
@@ -106,7 +107,7 @@ public class SolverTest2D extends Thread {
 		A a5 = new A(p3e.m_vertex, counter, tierList.get(4));
 		A a6 = new A(p3f.m_vertex, counter, tierList.get(5));
 		A a7 = new A(p3g.m_vertex, counter, tierList.get(6));
-		AN a8 = new AN(p3h.m_vertex, counter, tierList.get(7));
+		AN a8 = new AN(p3h.m_vertex, counter, tierList.get(7)); 
 		
 		a1.start();
 		a2.start();
@@ -123,7 +124,7 @@ public class SolverTest2D extends Thread {
 		A2 a2_2 = new A2(p2d.m_vertex, counter);
 		A2 a2_3 = new A2(p2e.m_vertex, counter);
 		A2 a2_4 = new A2(p2f.m_vertex, counter); 
-		
+	
 		a2_1.start();
 		a2_2.start();
 		a2_3.start();
@@ -139,7 +140,7 @@ public class SolverTest2D extends Thread {
 		e3.start();
 		e4.start();
 		counter.release();
-		
+
 		A2 a3_1 = new A2(p2a.m_vertex, counter);
 		A2 a3_2 = new A2(p2b.m_vertex, counter);
 		a3_1.start();
@@ -203,19 +204,20 @@ public class SolverTest2D extends Thread {
 		bs14.start();
 		
 		counter.release(); 
-		// check correctness of solution, rhs should contain only 1.0
+		
+		// extra variables are here:
+		MatrixUtils.printMatrix(p2f.m_vertex.m_a, p2f.m_vertex.m_b);
+
+		MatrixUtils.printMatrix(p3h.m_vertex.orig_matrix, p3h.m_vertex.orig_rhs);
+		MatrixUtils.printMatrix(p3a.m_vertex.orig_matrix, p3a.m_vertex.orig_rhs);
 		
 		for (int i=0;i<6;i++) {
 			assertTrue(Math.abs(p2c.m_vertex.m_b[i]-1.0) < epsilon);
 			assertTrue(Math.abs(p2d.m_vertex.m_b[i]-1.0) < epsilon);
 			assertTrue(Math.abs(p2e.m_vertex.m_b[i]-1.0) < epsilon);
 			assertTrue(Math.abs(p2f.m_vertex.m_b[i]-1.0) < epsilon);
-			
 		}
 		
-		// extra variables are here:
-		MatrixUtils.printMatrix(p3h.m_vertex.orig_matrix, p3h.m_vertex.orig_rhs);
-		MatrixUtils.printMatrix(p3a.m_vertex.orig_matrix, p3a.m_vertex.orig_rhs);
 		
 	}
 

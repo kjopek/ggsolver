@@ -20,11 +20,8 @@ public class AN extends Production {
 		  
 		  double [][] matrix = new double[21][21];
 		  double []rhs = new double[21];
-
-		  final int size = 17;
 		  
-		  T.m_a = new double[size][size];
-		  T.m_b = new double[size];		  
+		  MatrixUtils.printMatrix(m_tier.getMatrix(), m_tier.getRhs());
 		  
 		  for (int i=0; i<17; i++) {
 			  for (int j=0; j<17; j++) {
@@ -35,7 +32,7 @@ public class AN extends Production {
 
 		  for (int i=0;i<4;i++) {
 			  for (int j=0;j<17;j++) {
-				  matrix[i][j+4] = m_tier.getMatrix()[i+17][j+4];
+				  matrix[i][j+4] = m_tier.getMatrix()[i+17][j];
 				  matrix[j+4][i] = m_tier.getMatrix()[j][i+17];
 			  }
 		  }
@@ -44,10 +41,15 @@ public class AN extends Production {
 			  for (int j=0; j<4; j++) {
 				  matrix[i][j] = m_tier.getMatrix()[i+17][j+17];
 			  }
+			  rhs[i] = m_tier.getRhs()[i+17];
 		  }
+
+		  System.out.println("======");
+		  MatrixUtils.printMatrix(matrix, rhs);
+
 		  
 		  MatrixUtils.eliminate(4, matrix, rhs);
-		    
+		  
 		  // copy out matrix
 		  for (int i=0; i<17; i++) {
 			  for (int j=0; j<17; j++) {

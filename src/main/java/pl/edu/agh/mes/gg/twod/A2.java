@@ -1,6 +1,7 @@
 package pl.edu.agh.mes.gg.twod;
 
 import pl.edu.agh.mes.gg.Counter;
+import pl.edu.agh.mes.gg.MatrixUtils;
 import pl.edu.agh.mes.gg.Production;
 import pl.edu.agh.mes.gg.Vertex;
 
@@ -21,6 +22,7 @@ public class A2 extends Production {
 		T.m_a = new double[size][size];
 		T.m_b = new double[size];
 		
+		
 		if (T.m_left.m_a.length == 17 && T.m_right.m_a.length == 17)
 		{
 			offsetA = 12;
@@ -29,6 +31,9 @@ public class A2 extends Production {
 			offsetA = 10;
 			offsetB = 5;
 		}
+		
+		System.out.println("a="+T.m_left.m_a.length+" b="+T.m_right.m_a.length);
+		System.out.println("off_a="+offsetA+" off_b="+offsetB);
 		
 		for (i=0;i<5;i++) {
 			for (j=0; j<5; j++) {
@@ -48,7 +53,7 @@ public class A2 extends Production {
 				T.m_a[i+10][j+10] = T.m_right.m_a[i+offsetA][j+offsetA];
 
 				// x: left y:bottom
-				T.m_a[i+10][j] = T.m_right.m_a[i+offsetB][j+offsetA];
+				T.m_a[i+10][j] = T.m_right.m_a[i+offsetA][j+offsetB];
 				
 				// x: right y: top
 				T.m_a[i][j+10] = T.m_right.m_a[i+offsetB][j+offsetA]; 

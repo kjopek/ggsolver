@@ -61,7 +61,7 @@ public class MatrixUtils {
 		for (int i=startingRow; i>=0; i--) {
 			double sum = rhs[i];
 
-			for (int j=matrix.length;j>=i+1;j--) {
+			for (int j=matrix.length-1;j>=i+1;j--) {
 				sum -= matrix[i][j] * rhs[j]; 
 				matrix[i][j] = 0.0;
 			}

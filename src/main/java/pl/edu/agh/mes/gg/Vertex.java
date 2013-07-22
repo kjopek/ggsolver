@@ -15,16 +15,16 @@ public class Vertex {
 		this.m_right=Right;
 		this.m_parent=Parent;
 		this.m_label=Lab;
-		m_a = new double[21][21];
-		m_b = new double[21];
+		m_a = new double[17][17];
+		m_b = new double[17];
 	}
 	//empty constructor
 	public Vertex(){
 		this.m_left=null;
 		this.m_right=null;
 		this.m_parent=null;
-		m_a = new double[21][21];
-		m_b = new double[21];
+		m_a = new double[17][17];
+		m_b = new double[17];
 	}
 	//label
 	public String m_label;

@@ -18,14 +18,9 @@ public class A1 extends Production{
 	public Vertex apply(Vertex T) {
 		  System.out.println("A1");
 
-		  final int size = 17;
-		  
-		  T.m_a = new double[size][size];
-		  T.m_b = new double[size];
-		  
-		  // XXX: do we really need this?
 		  double [][] matrix = m_tier.getMatrix().clone();
 		  double []rhs = m_tier.getRhs().clone();
+		  
 		  
 		  // in A1 we need to move 2,4,6,8 [row,col] to the top-left corner of matrix
 		  MatrixUtils.swapCols(0, 1, matrix);
@@ -56,9 +51,8 @@ public class A1 extends Production{
 		  
 		  MatrixUtils.swapRows(3, 4, matrix, rhs);
 
-		  // pre-processing
-		  MatrixUtils.eliminate(5, matrix, rhs);
-		  		  
+		  MatrixUtils.eliminate(4, matrix, rhs);
+		  
 		  // copy out eliminated matrix
 		  for (int i=0; i<17; i++) {
 			  for (int j=0;j<17;j++) {
@@ -70,6 +64,7 @@ public class A1 extends Production{
 		  // save the original matrix with all unknowns
 		  T.orig_matrix = matrix;
 		  T.orig_rhs = rhs;
+		  
 		  
 		  return T;
 	}
