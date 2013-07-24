@@ -118,32 +118,49 @@ class Executor extends Thread {
 		
 		BS bsd = new BS(S.m_left.m_left, counter);
 		BS bse = new BS(S.m_left.m_right, counter);
+		BS bsf = new BS(S.m_right.m_left, counter);
+		BS bsg = new BS(S.m_right.m_right, counter);
 		bsd.start();
 		bse.start();
+		bsf.start();
+		bsg.start();
 		counter.release();
 		
 		//done
+		/*
 		System.out.println("done");
 		GraphDrawer drawer = new GraphDrawer();
 		drawer.draw(p1.m_vertex);
 		System.out.println("---------------------");
+		*/
+		BS bsh = new BS(a1a.m_vertex,counter); 
+		BS bsi = new BS(aa.m_vertex,counter);
+		BS bsj = new BS(ab.m_vertex,counter);
+		BS bsk = new BS(ac.m_vertex,counter);
+		BS bsl = new BS(ad.m_vertex,counter);
+		BS bsm = new BS(ana.m_vertex,counter);
 		
-		System.out.println(bsa.m_vertex.m_b[0]);
-		System.out.println(bsa.m_vertex.m_b[1]);
-		System.out.println(bsa.m_vertex.m_b[2]);
-		System.out.println(bsb.m_vertex.m_b[0]);
-		System.out.println(bsb.m_vertex.m_b[1]);
-		System.out.println(bsb.m_vertex.m_b[2]);
-		System.out.println(bsc.m_vertex.m_b[0]);
-		System.out.println(bsc.m_vertex.m_b[1]);
-		System.out.println(bsc.m_vertex.m_b[2]);
-		System.out.println(bsd.m_vertex.m_b[0]);
-		System.out.println(bsd.m_vertex.m_b[1]);
-		System.out.println(bsd.m_vertex.m_b[2]);
-		System.out.println(bsc.m_vertex.m_b[2]);
-		System.out.println(bse.m_vertex.m_b[0]);
-		System.out.println(bse.m_vertex.m_b[1]);
-		System.out.println(bse.m_vertex.m_b[2]);
+		bsh.start();
+		bsi.start();
+		bsj.start();
+		bsk.start();
+		bsl.start();
+		bsm.start();
+		
+		counter.release();	
+
+		System.out.println(bsh.m_vertex.m_b[1]);
+		System.out.println(bsh.m_vertex.m_b[2]);
+		System.out.println(bsi.m_vertex.m_b[1]);
+		System.out.println(bsi.m_vertex.m_b[2]);
+		System.out.println(bsj.m_vertex.m_b[1]);
+		System.out.println(bsj.m_vertex.m_b[2]);
+		System.out.println(bsk.m_vertex.m_b[1]);
+		System.out.println(bsk.m_vertex.m_b[2]);
+		System.out.println(bsl.m_vertex.m_b[1]);
+		System.out.println(bsl.m_vertex.m_b[2]);
+		System.out.println(bsm.m_vertex.m_b[1]);
+		System.out.println(bsm.m_vertex.m_b[2]);
 	}
 }
 
