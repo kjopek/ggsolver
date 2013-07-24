@@ -1,5 +1,6 @@
 package pl.edu.agh.mes.gg;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,18 +17,16 @@ import pl.edu.agh.mes.gg.twod.E;
 import pl.edu.agh.mes.gg.twod.ERoot;
 
 public class TreeBuilder extends Thread {
-	public long buildTree(int tiers, double botLeftX, double botLeftY, double size, DoubleArgFunction f) {
+	public List<Vertex> buildTree(int tiers, double botLeftX, double botLeftY, double size, DoubleArgFunction f) {
 		MatrixGenerator matrixGenerator = new MatrixGenerator();
 		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(tiers, botLeftX, botLeftY, size, f);
 		
+		List<Vertex> returnList = new ArrayList<Vertex>();
 		Map<Integer, List<Vertex>> levels = new HashMap<Integer, List<Vertex>>();
-		
 		boolean added = true;
 		int lastLevel = 1;
 		Vertex S = new Vertex(null,null,null,"S");
 		Counter counter = new Counter(this);
-
-		long t1 = System.currentTimeMillis();
 		
 		P1 p1 = new P1(S,counter);
 		p1.start();
@@ -44,18 +43,14 @@ public class TreeBuilder extends Thread {
 		
 		counter.release();
 		
-		
 		counter.inc();
 		parallelBS(S, counter, this);
 		counter.release();
 		
-		long t2 = System.currentTimeMillis();
+		levels.put(1, new ArrayList<Vertex>());
+		levels.get(1).add(S);
 		
-		
-		//levels.put(1, new ArrayList<Vertex>());
-		//levels.get(1).add(S);
-		
-		/*while (added) {
+		while (added) {
 			added = false;
 			List<Vertex> currentLevel = new ArrayList<Vertex>();
 			for (Vertex v : levels.get(lastLevel)) {
@@ -73,13 +68,27 @@ public class TreeBuilder extends Thread {
 				levels.put(lastLevel+1, currentLevel);
 			}
 			lastLevel++;
-		}*/
+		}
 
+		int maxLevel = 1;
+		
 		for (int i : levels.keySet()) {
-			System.out.println("Level "+i+" contains: " + levels.get(i).size()+" elements");
+			if (i>maxLevel) {
+				maxLevel = i;
+			}
 		}
 		
-		return t2-t1;
+		for (Vertex v : levels.get(maxLevel-1)) {
+			if (v.m_left == null && v.m_right == null) {
+				returnList.add(v);
+			} else {
+				returnList.add(v.m_left);
+				returnList.add(v.m_right);
+			}
+		}
+		
+		return returnList;
+		
 	}
 	
 	private void recursiveTreeBuilder(final int n, Vertex parent, 
