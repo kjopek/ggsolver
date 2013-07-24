@@ -1,4 +1,4 @@
-package pl.edu.agh.mes.gg;
+package pl.edu.agh.mes.gg.twod;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,13 +8,11 @@ import java.util.Map;
 import matrixgeneration.DoubleArgFunction;
 import matrixgeneration.MatrixGenerator;
 import matrixgeneration.Tier;
-import pl.edu.agh.mes.gg.twod.A;
-import pl.edu.agh.mes.gg.twod.A1;
-import pl.edu.agh.mes.gg.twod.A2;
-import pl.edu.agh.mes.gg.twod.AN;
-import pl.edu.agh.mes.gg.twod.BS;
-import pl.edu.agh.mes.gg.twod.E;
-import pl.edu.agh.mes.gg.twod.ERoot;
+import pl.edu.agh.mes.gg.Counter;
+import pl.edu.agh.mes.gg.P1;
+import pl.edu.agh.mes.gg.P2;
+import pl.edu.agh.mes.gg.P3;
+import pl.edu.agh.mes.gg.Vertex;
 
 public class TreeBuilder extends Thread {
 	public List<Vertex> buildTree(int tiers, double botLeftX, double botLeftY, double size, DoubleArgFunction f) {

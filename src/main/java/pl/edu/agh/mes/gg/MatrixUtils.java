@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MatrixUtils {
-	private static final double epsilon = 1e-10;
-	
 	public static void swapRows(int i, int j, double matrix[][], double rhs[]) {
 		double tmp;
 		for (int k = 0; k<matrix.length;k++) {
@@ -29,10 +27,26 @@ public class MatrixUtils {
 	}
 	
 	public static void eliminate(int rowsToElim, double matrix[][], double rhs[]) {
-		// TODO: pivoting!!
 		double x;
+		double maxX;
+		int maxRow;
+
 		for (int i=0;i<rowsToElim;i++) {
 			  
+			  maxX = Math.abs(matrix[i][i]);
+			  maxRow = i;
+			  
+			  for (int k=i+1; k<rowsToElim; k++) {
+				  if (Math.abs(matrix[k][i]) > maxX) {
+					  maxX = Math.abs(matrix[k][i]);
+					  maxRow = k;
+				  }
+			  }
+			  
+			  if (maxRow != i) {
+				  swapRows(i, maxRow, matrix, rhs);
+			  }
+			
 			  x = matrix[i][i];
 			  
 			  matrix[i][i] /= x;
