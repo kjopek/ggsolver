@@ -97,31 +97,7 @@ public class BS extends Production{
 		return T;
 	
 }
-	public void addCoefficients(Map<Integer, Double> solution, int firstNodeNr){
-		
-		
-		if(this.m_vertex.orig_rhs != null){
-			double[] rhs = this.m_vertex.orig_rhs;
-			if(this.m_vertex.orig_rhs.length == 8){
-				solution.put(1, rhs[0]);
-				solution.put(3, rhs[1]);
-				solution.put(0, rhs[2]);
-				solution.put(2, rhs[3]);
-				for(int i = 4; i<8; i++)
-					solution.put(i, rhs[i]);
-				
-			}
-			else{
-				solution.put(firstNodeNr+6, rhs[0]);
-				for(int i = firstNodeNr; i<firstNodeNr + 6; i++)
-					solution.put(i, rhs[i - firstNodeNr + 1]);
-			}
-		}
-		else{
-			for(int i = firstNodeNr; i<firstNodeNr + 6; i++)
-				solution.put(i,this.m_vertex.m_b[i - firstNodeNr]);
-		}
-	}
+	
 	
 }
 
