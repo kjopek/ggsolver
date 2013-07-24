@@ -54,6 +54,7 @@ public class SolverTest2D extends Thread {
 		 * p3a p3b p3c p3d p3e p3f p3g p3h 
 		 */
 		
+		long t1 = System.currentTimeMillis();
 		Vertex S = new Vertex(null,null,null,"S");
 
 		P1 p1 = new P1(S,counter);
@@ -205,11 +206,15 @@ public class SolverTest2D extends Thread {
 		
 		counter.release(); 
 		
+		long t2 = System.currentTimeMillis();
+		
+		System.out.println("Time: "+(t2-t1)/1000.0+ " s");
+		
 		// extra variables are here:
-		MatrixUtils.printMatrix(p2f.m_vertex.m_a, p2f.m_vertex.m_b);
+//		MatrixUtils.printMatrix(p2f.m_vertex.m_a, p2f.m_vertex.m_b);
 
-		MatrixUtils.printMatrix(p3h.m_vertex.orig_matrix, p3h.m_vertex.orig_rhs);
-		MatrixUtils.printMatrix(p3a.m_vertex.orig_matrix, p3a.m_vertex.orig_rhs);
+//		MatrixUtils.printMatrix(p3h.m_vertex.orig_matrix, p3h.m_vertex.orig_rhs);
+//		MatrixUtils.printMatrix(p3a.m_vertex.orig_matrix, p3a.m_vertex.orig_rhs);
 		
 		for (int i=0;i<6;i++) {
 			assertTrue(Math.abs(p2c.m_vertex.m_b[i]-1.0) < epsilon);

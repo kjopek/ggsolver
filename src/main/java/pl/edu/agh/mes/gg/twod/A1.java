@@ -16,8 +16,6 @@ public class A1 extends Production{
 	}
 	
 	public Vertex apply(Vertex T) {
-		  System.out.println("A1");
-
 		  double [][] matrix = m_tier.getMatrix().clone();
 		  double []rhs = m_tier.getRhs().clone();
 		  
@@ -65,7 +63,7 @@ public class A1 extends Production{
 		  T.orig_matrix = matrix;
 		  T.orig_rhs = rhs;
 		  
-		  
+		  //MatrixUtils.printMatrix(T.m_a, T.m_b);
 		  return T;
 	}
 }

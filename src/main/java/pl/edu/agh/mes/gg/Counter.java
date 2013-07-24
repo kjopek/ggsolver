@@ -19,30 +19,24 @@ public class Counter {
 
 	public synchronized void inc() {
 		m_counter++;
-		System.out.println("Counter:"+m_counter);
 	}
 
 	public synchronized void dec() {
 		if(m_counter>0)
 			m_counter--;
-		System.out.println("Counter:"+m_counter);
 
         if(m_counter==0) {
-   		    System.out.println("Counter:notify()");
 			notify();
 		}
 	}
 
 	public synchronized void release() {
 		try {
-		  System.out.println("Counter:wait");
 
 		  while (m_counter > 0) {
-			  System.out.println("Counter: m_counter > 0!");
 			  wait();
 		  }
 
-		  System.out.println("Counter:release");
 		}
 		catch(InterruptedException e){
 			System.out.println("Counter:InterruptedException caught");

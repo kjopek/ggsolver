@@ -16,12 +16,10 @@ public class AN extends Production {
 	}
 	
 	public Vertex apply(Vertex T) {
-		  System.out.println("AN");
 		  
 		  double [][] matrix = new double[21][21];
 		  double []rhs = new double[21];
 		  
-		  MatrixUtils.printMatrix(m_tier.getMatrix(), m_tier.getRhs());
 		  
 		  for (int i=0; i<17; i++) {
 			  for (int j=0; j<17; j++) {
@@ -44,10 +42,6 @@ public class AN extends Production {
 			  rhs[i] = m_tier.getRhs()[i+17];
 		  }
 
-		  System.out.println("======");
-		  MatrixUtils.printMatrix(matrix, rhs);
-
-		  
 		  MatrixUtils.eliminate(4, matrix, rhs);
 		  
 		  // copy out matrix

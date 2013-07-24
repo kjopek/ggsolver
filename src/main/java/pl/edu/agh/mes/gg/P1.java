@@ -6,7 +6,6 @@ public class P1 extends Production {
 		super(Vert,Count);
 	}
 	public Vertex apply(Vertex S) {
-	  System.out.println("p1");
 	  Vertex T1 = new Vertex(null,null,S,"T");
 	  Vertex T2 = new Vertex(null,null,S,"T");
 	  S.set_left(T1);

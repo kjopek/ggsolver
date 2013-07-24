@@ -7,75 +7,237 @@ import java.util.Map;
 import matrixgeneration.DoubleArgFunction;
 import matrixgeneration.MatrixGenerator;
 import matrixgeneration.Tier;
-
+import pl.edu.agh.mes.gg.twod.A;
+import pl.edu.agh.mes.gg.twod.A1;
+import pl.edu.agh.mes.gg.twod.A2;
+import pl.edu.agh.mes.gg.twod.AN;
+import pl.edu.agh.mes.gg.twod.BS;
+import pl.edu.agh.mes.gg.twod.E;
+import pl.edu.agh.mes.gg.twod.ERoot;
 
 public class TreeBuilder extends Thread {
-	private int numbers;
-	public List<Vertex> run(int tiers, double botLeftX, double botLeftY, double size, DoubleArgFunction f) {
+	public long buildTree(int tiers, double botLeftX, double botLeftY, double size, DoubleArgFunction f) {
 		MatrixGenerator matrixGenerator = new MatrixGenerator();
 		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(tiers, botLeftX, botLeftY, size, f);
 		
-		Map<Integer, List<Production>> levels = new HashMap<Integer, List<Production>>();
+		Map<Integer, List<Vertex>> levels = new HashMap<Integer, List<Vertex>>();
 		
+		boolean added = true;
+		int lastLevel = 1;
 		Vertex S = new Vertex(null,null,null,"S");
 		Counter counter = new Counter(this);
 
+		long t1 = System.currentTimeMillis();
+		
 		P1 p1 = new P1(S,counter);
 		p1.start();
 		counter.release();
-
-		recursiveTreeBuilder(tiers, S, counter, 1, levels);
 		
-		return null;
+		counter.inc();
+
+		recursiveTreeBuilder(tiers, S, counter, this, 0, tiers-1, tierList);
+		
+		counter.release();
+		
+		ERoot eroot = new ERoot(S, counter);
+		eroot.start();
+		
+		counter.release();
+		
+		
+		counter.inc();
+		parallelBS(S, counter, this);
+		counter.release();
+		
+		long t2 = System.currentTimeMillis();
+		
+		
+		//levels.put(1, new ArrayList<Vertex>());
+		//levels.get(1).add(S);
+		
+		/*while (added) {
+			added = false;
+			List<Vertex> currentLevel = new ArrayList<Vertex>();
+			for (Vertex v : levels.get(lastLevel)) {
+				// check left son
+				if (v.m_left != null) {
+					added = true;
+					currentLevel.add(v.m_left);
+				}
+				if (v.m_right != null) {
+					added = true;
+					currentLevel.add(v.m_right);
+				}
+			}
+			if (added) {
+				levels.put(lastLevel+1, currentLevel);
+			}
+			lastLevel++;
+		}*/
+
+		for (int i : levels.keySet()) {
+			System.out.println("Level "+i+" contains: " + levels.get(i).size()+" elements");
+		}
+		
+		return t2-t1;
 	}
 	
-	private void recursiveTreeBuilder(int n, Vertex parent, Counter counter, int level, Map<Integer, List<Production>> levels) {
-		if (n>3) {
-			P2 p2a = new P2(parent.m_left, counter);
-			P2 p2b = new P2(parent.m_right, counter);
-
+	private void recursiveTreeBuilder(final int n, Vertex parent, 
+			final Counter parentCounter, final Thread thread,
+			final int low_range, final int high_range, final List<Tier> tierList) {
+				
+		if (high_range-low_range+1>3) {
+			final Counter counter = new Counter(thread);
+			final P2 p2a = new P2(parent.m_left, counter);
+			final P2 p2b = new P2(parent.m_right, counter);
+			
 			p2a.start();
 			p2b.start();
 			counter.release();
 			
-			if (!levels.containsKey(level)) {
-			}
+			counter.inc();
+			counter.inc();
+
+			new Thread() {
+				public void run() {
+					recursiveTreeBuilder(n, p2a.m_vertex, counter, this, 
+							low_range, low_range+(high_range-low_range)/2, tierList);
+				}
+			}.start();
+
+			new Thread() {
+				public void run() {
+					recursiveTreeBuilder(n, p2b.m_vertex, counter, this, 
+							low_range+(high_range-low_range)/2+1, high_range, tierList);
+				}
+			}.start();
 			
-			recursiveTreeBuilder(n/2, p2a.m_vertex, counter, level+1, levels);
-			recursiveTreeBuilder(n/2+n%2, p2b.m_vertex, counter, level+1, levels);
+			counter.release();
 			
-		} else if (n==3) {
-			P2 p2 = new P2(parent.m_left, counter);
+			A2 a2a = new A2(p2a.m_vertex, counter);
+			A2 a2b = new A2(p2b.m_vertex, counter);
+			a2a.start();
+			a2b.start();
+			counter.release();
+			
+			E e1 = new E(p2a.m_vertex, counter);
+			E e2 = new E(p2b.m_vertex, counter);
+			e1.start();
+			e2.start();
+			counter.release();
+			
+			parentCounter.dec();
+			
+		}	else if (high_range-low_range+1== 3) {
+			Counter counter = new Counter(thread);
+			P3 p3 = new P3(parent.m_left, counter);
+			P2 p2 = new P2(parent.m_right, counter);
+			
+			p3.start();
 			p2.start();
 			counter.release();
 			
-			P2 p2a = new P2(p2.m_vertex.m_left, counter);
-			P3 p3 = new P3(p2.m_vertex.m_right, counter);
-			p2a.start();
-			p3.start();
-			counter.release();
-						
-			P3 p3a = new P3(p2a.m_vertex.m_left, counter);
-			P3 p3b = new P3(p2a.m_vertex.m_right, counter);
+			P3 p3a = new P3(p2.m_vertex.m_left, counter);
+			P3 p3b = new P3(p2.m_vertex.m_right, counter);
 			p3a.start();
 			p3b.start();
 			counter.release();
 			
-		}	else if (n==2) {
-		
+			if (low_range == 0) {
+				A1 a1 = new A1(p3.m_vertex, counter, tierList.get(low_range));
+				a1.start();
+			} else {
+				A a = new A(p3.m_vertex, counter, tierList.get(low_range));
+				a.start();
+			}
+			
+			if (high_range == n-1) {
+				AN an = new AN(p2.m_vertex.m_right, counter, tierList.get(high_range));
+				an.start();
+			} else {
+				A  a = new A(p2.m_vertex.m_right, counter, tierList.get(high_range));
+				a.start();
+			}
+			
+			A a = new A(p2.m_vertex.m_left, counter,tierList.get(low_range+1));
+			a.start();
+			
+			counter.release();
+			
+			A2 a2 = new A2(p2.m_vertex, counter);
+			a2.start();
+			counter.release();
+			
+			E e1 = new E(p2.m_vertex, counter);
+			e1.start();
+			counter.release();
+			
+			parentCounter.dec();
+			
+		}	else if (high_range-low_range+1==2) {
+			
+			Counter counter = new Counter(thread);
 			P3 p3a = new P3(parent.m_left, counter);
 			P3 p3b = new P3(parent.m_right, counter);
 
 			p3a.start();
 			p3b.start();
 			counter.release();
-
-		} else if (n==1) {
 			
-			P3 p3 = new P3(parent.m_left, counter);
-			p3.start();
+			if (low_range == 0) {
+				A1 a1 = new A1(p3a.m_vertex, counter, tierList.get(low_range));
+				a1.start();
+			} else {
+				A a = new A(p3a.m_vertex, counter, tierList.get(low_range));
+				a.start();
+			}
+			
+			if (high_range == n-1) {
+				AN an = new AN(p3b.m_vertex,counter, tierList.get(high_range));
+				an.start();
+			} else {
+				A a = new A(p3a.m_vertex, counter, tierList.get(high_range));
+				a.start();
+			}
+			
 			counter.release();
 			
+			parentCounter.dec();
+
 		}
-	}		
+	}
+	
+	private void parallelBS(final Vertex parent, final Counter parentCounter, Thread thread) {
+		if (parent != null) {
+			final Counter counter = new Counter(thread);
+			if (parent.m_left != null) {
+				BS bs1 = new BS(parent.m_left, counter);
+				bs1.start();
+			}
+			
+			if (parent.m_right != null) {
+				BS bs2 = new BS(parent.m_right, counter);
+				bs2.start();
+			}
+			
+			counter.release();
+			counter.inc();
+			counter.inc();
+				new Thread() {
+					public void run() {
+						parallelBS(parent.m_left, counter, this);
+					}
+				}.start();
+				new Thread() {
+					public void run() {
+						parallelBS(parent.m_right, counter, this);
+					}
+				}.start();
+			counter.release();
+		}
+		
+		parentCounter.dec();
+		
+	}
+	
 }
