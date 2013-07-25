@@ -84,7 +84,7 @@ public class BS extends Production{
 						}
 						T.orig_rhs[i+4] = T.m_b[i];
 					}
-					MatrixUtils.backwardSubstitution(T.orig_matrix, T.orig_rhs, 4);
+					MatrixUtils.backwardSubstitution(T.orig_matrix, T.orig_rhs, 3);
 				}
 			}			
 			
@@ -94,6 +94,7 @@ public class BS extends Production{
 			MatrixUtils.backwardSubstitution(T.m_a, T.m_b, 14);
 		}
 
+		
 		return T;
 	
 }

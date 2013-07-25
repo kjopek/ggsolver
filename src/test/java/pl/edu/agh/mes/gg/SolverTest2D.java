@@ -2,7 +2,9 @@ package pl.edu.agh.mes.gg;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import matrixgeneration.DoubleArgFunction;
 import matrixgeneration.MatrixGenerator;
@@ -32,13 +34,22 @@ public class SolverTest2D extends Thread {
 
 			@Override
 			public double computeValue(double x, double y) {
-				return x*(1-y); 
+				return 1; 
 			}
 			
 		};
 		
+		double [][] matrix;
+		double [] rhs;
+		
 		MatrixGenerator matrixGenerator = new MatrixGenerator(); 
 		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1, -1, 1,f);
+		
+		matrix = matrixGenerator.getMatrix();
+		rhs = matrixGenerator.getRhs();
+		
+		Map<Integer,Double> matrixSolution = MatrixUtils.getSolutionThroughBackwardSubstitution(matrix, rhs);
+		
 		
 		Counter counter = new Counter(this);
 
@@ -54,7 +65,6 @@ public class SolverTest2D extends Thread {
 		 * p3a p3b p3c p3d p3e p3f p3g p3h 
 		 */
 		
-		long t1 = System.currentTimeMillis();
 		Vertex S = new Vertex(null,null,null,"S");
 
 		P1 p1 = new P1(S,counter);
@@ -206,22 +216,29 @@ public class SolverTest2D extends Thread {
 		
 		counter.release(); 
 		
-		long t2 = System.currentTimeMillis();
+		Map<Integer,Double> productionSolution = new HashMap<Integer, Double>();
+		p3a.m_vertex.addCoefficients(productionSolution, 0);
+		p3b.m_vertex.addCoefficients(productionSolution, 16);
+		p3c.m_vertex.addCoefficients(productionSolution, 28);
+		p3d.m_vertex.addCoefficients(productionSolution, 40);
+		p3e.m_vertex.addCoefficients(productionSolution, 52);
+		p3f.m_vertex.addCoefficients(productionSolution, 64);
+		p3g.m_vertex.addCoefficients(productionSolution, 76);
+		p3h.m_vertex.addCoefficients(productionSolution, 88);
 		
-		System.out.println("Time: "+(t2-t1)/1000.0+ " s");
-		
-		// extra variables are here:
-//		MatrixUtils.printMatrix(p2f.m_vertex.m_a, p2f.m_vertex.m_b);
-
-//		MatrixUtils.printMatrix(p3h.m_vertex.orig_matrix, p3h.m_vertex.orig_rhs);
-//		MatrixUtils.printMatrix(p3a.m_vertex.orig_matrix, p3a.m_vertex.orig_rhs);
-		
-		for (int i=0;i<6;i++) {
-			assertTrue(Math.abs(p2c.m_vertex.m_b[i]-1.0) < epsilon);
-			assertTrue(Math.abs(p2d.m_vertex.m_b[i]-1.0) < epsilon);
-			assertTrue(Math.abs(p2e.m_vertex.m_b[i]-1.0) < epsilon);
-			assertTrue(Math.abs(p2f.m_vertex.m_b[i]-1.0) < epsilon);
+		for(Tier tier : tierList){
+			tier.setCoefficients(productionSolution);
+			tier.checkInterpolationCorectness(f);
 		}
+		
+		for(int key : matrixSolution.keySet()) {
+				System.out.println("key: "+key);
+				System.out.println("Matrix: "+matrixSolution.get(key));
+				System.out.println("Production: "+productionSolution.get(key));
+    			assertTrue(Math.abs(matrixSolution.get(key) - productionSolution.get(key)) < epsilon);
+		}
+		
+		//MatrixUtils.printMatrix(p3a.m_vertex.m_a, p3a.m_vertex.m_b);
 		
 		
 	}

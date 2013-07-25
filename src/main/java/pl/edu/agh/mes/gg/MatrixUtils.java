@@ -46,7 +46,7 @@ public class MatrixUtils {
 			  if (maxRow != i) {
 				  swapRows(i, maxRow, matrix, rhs);
 			  }
-			
+			  
 			  x = matrix[i][i];
 			  
 			  matrix[i][i] /= x;
@@ -99,11 +99,8 @@ public class MatrixUtils {
 	public static Map<Integer, Double> getSolutionThroughBackwardSubstitution(double matrix[][], double rhs[]){
 		eliminate(rhs.length, matrix, rhs);
 		Map<Integer, Double> solution = new HashMap<Integer, Double>(); 
+		backwardSubstitution(matrix, rhs, rhs.length-1);
 		for(int i = rhs.length - 1; i>-1; i--){
-			for(int j = rhs.length - 1; j>i; j--){
-				rhs[i] -= matrix[i][j]*rhs[j]; 
-			}
-			rhs[i] /= matrix[i][i];
 			solution.put(i, rhs[i]);
 		}
 		

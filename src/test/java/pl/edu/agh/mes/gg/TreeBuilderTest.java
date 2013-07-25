@@ -1,5 +1,7 @@
 package pl.edu.agh.mes.gg;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,60 +9,64 @@ import java.util.Map;
 import matrixgeneration.DoubleArgFunction;
 import matrixgeneration.MatrixGenerator;
 import matrixgeneration.Tier;
+
+import org.junit.Test;
+
 import pl.edu.agh.mes.gg.twod.TreeBuilder;
 
 public class TreeBuilderTest {
-	public static void main(String args[]) {
+	
+	final static double epsilon = 1e-9;
+	
+	@Test
+	public void treeBuilderTest() {
 		
-		int nrOfTiers = 400; 
+		int nrOfTiers = 52; 
 		TreeBuilder treeBuilder = new TreeBuilder();
 		DoubleArgFunction f = new DoubleArgFunction() {
 			@Override
 			public double computeValue(double x, double y) {
-				return 0.5; 
+				return 0.01; 
 			}
 		};
-		treeBuilder.buildTree(128, -1, 1, 2, f);
-		
-		long productionTime1 = System.currentTimeMillis();
-		List<Vertex> leafVertexList = treeBuilder.buildTree(nrOfTiers, -1, 1, 2, f);
-		long productionTime2 = System.currentTimeMillis();
-		MatrixGenerator matrixGenerator = new MatrixGenerator();
+
 		double [][] matrix;
 		double [] rhs;
 
-		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, 0, 0, 2,f);
+		MatrixGenerator matrixGenerator = new MatrixGenerator();
+		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1e+10, -1e+10, 2e+16, f);
 		
+		List<Vertex> leafVertexList = treeBuilder.buildTree(tierList);
+
 		matrix = matrixGenerator.getMatrix();
 		rhs = matrixGenerator.getRhs();
 		
-		
-		MatrixUtils.eliminate(rhs.length, matrix, rhs);
 		Map<Integer,Double> matrixSolution = MatrixUtils.getSolutionThroughBackwardSubstitution(matrix, rhs);
-
 				
 		Map<Integer,Double> productionSolution = new HashMap<Integer, Double>();
 		leafVertexList.get(0).addCoefficients(productionSolution, 0);
 		int firstNodeNr = 16; 
+		
 		for(int i = 1; i< leafVertexList.size(); i++){
 			leafVertexList.get(i).addCoefficients(productionSolution, firstNodeNr);
 			firstNodeNr+=12;
-			
 		}
 
+//		for(Tier tier : tierList){
+//			tier.setCoefficients(productionSolution);
+//			tier.checkInterpolationCorectness(f);
+//		}
 		
-		for(Tier tier : tierList){
-			tier.setCoefficients(productionSolution);
-			tier.checkInterpolationCorectness(f);
+		for(int key : matrixSolution.keySet()) {
+			System.out.println("key: "+key);
+			System.out.println("Matrix: "+matrixSolution.get(key));
+			System.out.println("Production: "+productionSolution.get(key));
+			assertTrue(Math.abs(matrixSolution.get(key) - productionSolution.get(key)) < epsilon);
 		}
-		for(int key : matrixSolution.keySet()){
-			double matrixValue = matrixSolution.get(key);
-			if(Math.abs(matrixValue - productionSolution.get(key)) > 0.000001)
-				throw new RuntimeException(); 
-		}
-		if(productionSolution.size() != matrixSolution.size())
-			throw new RuntimeException(); 
 		
+		assertTrue(productionSolution.size() == matrixSolution.size());
 		
 	}
+	
+
 }

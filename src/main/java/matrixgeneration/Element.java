@@ -418,7 +418,7 @@ public class Element {
 				
 			}
 			
-			if( Math.abs((result - f.computeValue(randomXWithinElement, randomYWithinElement)))  > 0.001){
+			if(! (Math.abs((result - f.computeValue(randomXWithinElement, randomYWithinElement))) < 0.001)){
 				System.out.println("x");
 				throw new RuntimeException("Wrong for shape function space input function solution! " + (result - f.computeValue(randomXWithinElement, randomYWithinElement)));
 			}

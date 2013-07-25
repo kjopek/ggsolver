@@ -15,16 +15,16 @@ import pl.edu.agh.mes.gg.P3;
 import pl.edu.agh.mes.gg.Vertex;
 
 public class TreeBuilder extends Thread {
-	public List<Vertex> buildTree(int tiers, double botLeftX, double botLeftY, double size, DoubleArgFunction f) {
-		MatrixGenerator matrixGenerator = new MatrixGenerator();
-		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(tiers, botLeftX, botLeftY, size, f);
-		
+	public List<Vertex> buildTree(List<Tier> tierList) {
+
 		List<Vertex> returnList = new ArrayList<Vertex>();
 		Map<Integer, List<Vertex>> levels = new HashMap<Integer, List<Vertex>>();
 		boolean added = true;
 		int lastLevel = 1;
+		
 		Vertex S = new Vertex(null,null,null,"S");
 		Counter counter = new Counter(this);
+		
 		
 		P1 p1 = new P1(S,counter);
 		p1.start();
@@ -32,13 +32,21 @@ public class TreeBuilder extends Thread {
 		
 		counter.inc();
 
-		recursiveTreeBuilder(tiers, S, counter, this, 0, tiers-1, tierList);
+		recursiveTreeBuilder(tierList.size(), S, counter, this, 0, tierList.size()-1, tierList);
 		
+		counter.release();
+		
+		A2 rootA2 = new A2(S, counter);
+		rootA2.start();
 		counter.release();
 		
 		ERoot eroot = new ERoot(S, counter);
 		eroot.start();
 		
+		counter.release();
+
+		BS bs = new BS(S, counter);
+		bs.start();
 		counter.release();
 		
 		counter.inc();
@@ -203,7 +211,7 @@ public class TreeBuilder extends Thread {
 				AN an = new AN(p3b.m_vertex,counter, tierList.get(high_range));
 				an.start();
 			} else {
-				A a = new A(p3a.m_vertex, counter, tierList.get(high_range));
+				A a = new A(p3b.m_vertex, counter, tierList.get(high_range));
 				a.start();
 			}
 			
@@ -228,6 +236,7 @@ public class TreeBuilder extends Thread {
 			}
 			
 			counter.release();
+			
 			counter.inc();
 			counter.inc();
 				new Thread() {
