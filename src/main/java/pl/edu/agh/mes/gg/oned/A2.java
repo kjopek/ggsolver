@@ -9,7 +9,8 @@ public class A2 extends Production {
 		super(Vert,Count);
 	}
 	public Vertex apply(Vertex T) {
-	  System.out.println("A2");
+		  T.m_a = new double[3][3];
+		  T.m_b = new double[3];
 	  T.m_a[0][0]=T.m_left.m_a[2][2]+T.m_right.m_a[1][1];
 	  T.m_a[1][0]=T.m_left.m_a[1][2];
 	  T.m_a[2][0]=T.m_right.m_a[2][1];

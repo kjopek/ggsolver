@@ -14,19 +14,19 @@ import org.junit.Test;
 
 import pl.edu.agh.mes.gg.twod.TreeBuilder;
 
-public class TreeBuilderTest {
+public class TreeBuilderTest2D {
 	
 	final static double epsilon = 1e-9;
 	
 	@Test
 	public void treeBuilderTest() {
 		
-		int nrOfTiers = 52; 
+		int nrOfTiers = 51; 
 		TreeBuilder treeBuilder = new TreeBuilder();
 		DoubleArgFunction f = new DoubleArgFunction() {
 			@Override
 			public double computeValue(double x, double y) {
-				return 0.01; 
+				return 1; 
 			}
 		};
 
@@ -34,7 +34,7 @@ public class TreeBuilderTest {
 		double [] rhs;
 
 		MatrixGenerator matrixGenerator = new MatrixGenerator();
-		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1e+10, -1e+10, 2e+16, f);
+		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1, -1, 2, f);
 		
 		List<Vertex> leafVertexList = treeBuilder.buildTree(tierList);
 

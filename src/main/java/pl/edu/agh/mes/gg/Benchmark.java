@@ -1,8 +1,6 @@
 package pl.edu.agh.mes.gg;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import matrixgeneration.DoubleArgFunction;
 import matrixgeneration.MatrixGenerator;
@@ -13,7 +11,7 @@ public class Benchmark {
 
 	public static void main(String args[]) {
 
-		int nrOfTiers = 120;
+		int nrOfTiers = 500;
 
 		if (args.length == 1) {
 			nrOfTiers = Integer.parseInt(args[0]);
@@ -33,7 +31,10 @@ public class Benchmark {
 		long productionTime1 = System.currentTimeMillis();
 		treeBuilder.buildTree(tierList);
 		long productionTime2 = System.currentTimeMillis();
+		
 
+		System.out.println("Production time: "+(productionTime2-productionTime1)/1000.0+" s");
+		
 		double [][] matrix;
 		double [] rhs;
 
@@ -41,11 +42,12 @@ public class Benchmark {
 		matrix = matrixGenerator.getMatrix();
 		rhs = matrixGenerator.getRhs();
 
+		System.out.println("Matrix: "+matrix.length);
+
 		long eliminationTime1 = System.currentTimeMillis();
 		MatrixUtils.getSolutionThroughBackwardSubstitution(matrix, rhs);
 		long eliminationTime2 = System.currentTimeMillis();
 
-		System.out.println("Production time: "+(productionTime2-productionTime1)/1000.0+" s");
 		System.out.println("Elimination time: "+(eliminationTime2-eliminationTime1)/1000.0+" s");
 
 	}

@@ -12,7 +12,6 @@ public class BS extends Production{
 	
 	@Override
 	public Vertex apply(Vertex T) {
-		System.out.println("BS");
 		if(T.m_parent == null){
 			T.m_b[1] -= T.m_a[1][2]*T.m_b[2];
 			T.m_b[0] -= T.m_a[0][2]*T.m_b[2] + T.m_a[0][1]*T.m_b[1];

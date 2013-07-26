@@ -11,7 +11,6 @@ public class E2 extends Production{
 
 	@Override
 	public Vertex apply(Vertex T) {
-		System.out.println("E2");
 		double x = T.m_a[0][0];
 		T.m_a[0][0] /= x; 
 		T.m_a[0][1] /= x;
