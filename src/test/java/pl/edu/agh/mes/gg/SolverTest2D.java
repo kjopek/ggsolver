@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import matrixgeneration.Direction;
 import matrixgeneration.DoubleArgFunction;
 import matrixgeneration.MatrixGenerator;
 import matrixgeneration.Tier;
@@ -35,6 +36,12 @@ public class SolverTest2D extends Thread {
 			@Override
 			public double computeValue(double x, double y) {
 				return 1; 
+			}
+
+			@Override
+			public double computeDerivativeValue(double x, double y,
+					Direction direction) {
+				throw new RuntimeException(); 
 			}
 			
 		};

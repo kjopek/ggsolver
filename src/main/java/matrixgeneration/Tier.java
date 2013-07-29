@@ -23,11 +23,11 @@ public class Tier {
 		rhs = new double[21];
 		
 		startNrAdj = botLeftElement.getBotLeftVertexNr();
-		botLeftElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj);
-		topLeftElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj);
+		botLeftElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj,true);
+		topLeftElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj,true);
 		if(botRightElement != null)
-			botRightElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj);
-		topRightElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj);
+			botRightElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj,true);
+		topRightElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj,true);
 		
 	}
 

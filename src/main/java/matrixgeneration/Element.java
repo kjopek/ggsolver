@@ -350,47 +350,48 @@ public class Element {
 				botLeftCoord[1], botLeftCoord[1] + size, product);
 	}
 	
-	public void fillMatrix(double[][] matrix, int startNrAdj){
-		
-		int[] functionNumbers = new int[] {
-			botLeftVertexNr, leftEdgeNr, topLeftVertexNr, topEdgeNr, topRightVertexNr, botEdgeNr, interiorNr, rightEdgeNr, botRightVertexNr
-		};
-		
-		for(int i = 0; i<9; i++){
-			for(int j = 0; j<9; j++){
-				comp(functionNumbers[i] - startNrAdj, functionNumbers[j] - startNrAdj, shapeFunctions[i], shapeFunctions[j], matrix);
+	public void fillMatrix(double[][] matrix, int startNrAdj, boolean pbi){
+		if(pbi){
+			int[] functionNumbers = new int[] {
+				botLeftVertexNr, leftEdgeNr, topLeftVertexNr, topEdgeNr, topRightVertexNr, botEdgeNr, interiorNr, rightEdgeNr, botRightVertexNr
+			};
+			
+			for(int i = 0; i<9; i++){
+				for(int j = 0; j<9; j++){
+					comp(functionNumbers[i] - startNrAdj, functionNumbers[j] - startNrAdj, shapeFunctions[i], shapeFunctions[j], matrix);
+				}
 			}
 		}
 		
+	}
+	
+	public void fillMatrix(double[][] matrix, boolean pbi){
+		fillMatrix(matrix, 0, pbi);
+	}
+	
+	public void fillTierMatrix(double[][] matrix, double[] rhs, DoubleArgFunction f, int startNrAdj, boolean pbi){
+		fillMatrix(matrix, startNrAdj, pbi);
+		fillRhs(rhs, f, startNrAdj, pbi);
 		
 	}
 	
-	public void fillMatrix(double[][] matrix){
-		fillMatrix(matrix, 0);
+	public void fillRhs(double[] rhs, DoubleArgFunction f, int startNrAdj, boolean pbi){
+		if(pbi){
+			int[] functionNumbers = new int[] {
+				botLeftVertexNr, leftEdgeNr, topLeftVertexNr, topEdgeNr, topRightVertexNr, botEdgeNr, interiorNr, rightEdgeNr, botRightVertexNr
+			};
+			for(int i = 0; i<9; i++){
+				DoubleArgFunctionProduct product = new DoubleArgFunctionProduct();
+				product.setFunctions(shapeFunctions[i], f);
+				
+				rhs[functionNumbers[i] - startNrAdj] += GaussianQuadrature.definiteDoubleIntegral(botLeftCoord[0], botLeftCoord[0] + size,
+						botLeftCoord[1], botLeftCoord[1] + size, product);
+			}
+		}
 	}
 	
-	public void fillTierMatrix(double[][] matrix, double[] rhs, DoubleArgFunction f, int startNrAdj){
-		fillMatrix(matrix, startNrAdj);
-		fillRhs(rhs, f, startNrAdj);
-		
-	}
-	
-	public void fillRhs(double[] rhs, DoubleArgFunction f, int startNrAdj){
-
-		int[] functionNumbers = new int[] {
-			botLeftVertexNr, leftEdgeNr, topLeftVertexNr, topEdgeNr, topRightVertexNr, botEdgeNr, interiorNr, rightEdgeNr, botRightVertexNr
-		};
-		for(int i = 0; i<9; i++){
-			DoubleArgFunctionProduct product = new DoubleArgFunctionProduct();
-			product.setFunctions(shapeFunctions[i], f);
-			
-			rhs[functionNumbers[i] - startNrAdj] += GaussianQuadrature.definiteDoubleIntegral(botLeftCoord[0], botLeftCoord[0] + size,
-					botLeftCoord[1], botLeftCoord[1] + size, product);
-		}		
-	}
-	
-	public void fillRhs(double[] rhs, DoubleArgFunction f){
-		fillRhs(rhs, f, 0);
+	public void fillRhs(double[] rhs, DoubleArgFunction f, boolean pbi){
+		fillRhs(rhs, f, 0, pbi);
 	}
 	
 	public void setCoefficients(Map<Integer, Double> nodeNrCoefficientMap){

@@ -2,6 +2,7 @@ package pl.edu.agh.mes.gg;
 
 import java.util.List;
 
+import matrixgeneration.Direction;
 import matrixgeneration.DoubleArgFunction;
 import matrixgeneration.MatrixGenerator;
 import matrixgeneration.Tier;
@@ -22,6 +23,12 @@ public class Benchmark {
 			@Override
 			public double computeValue(double x, double y) {
 				return 1.0; 
+			}
+
+			@Override
+			public double computeDerivativeValue(double x, double y,
+					Direction direction) {
+				throw new RuntimeException();
 			}
 		};
 

@@ -48,12 +48,18 @@ public class Main {
 			public double computeValue(double x, double y) {
 				return y*x + 3 + x + y;
 			}
+
+			@Override
+			public double computeDerivativeValue(double x, double y,
+					Direction direction) {
+				throw new RuntimeException();
+			}
 		};
 		double[][] matrix = new double[19][19];
 		double[] rhs = new double[19];
-		elment.fillTierMatrix(matrix, rhs, f,0);
-		elment2.fillTierMatrix(matrix, rhs, f, 0);
-		elment3.fillTierMatrix(matrix, rhs, f, 0);
+		elment.fillTierMatrix(matrix, rhs, f,0,true);
+		elment2.fillTierMatrix(matrix, rhs, f, 0,true);
+		elment3.fillTierMatrix(matrix, rhs, f, 0,true);
 		MatrixUtils.printMatrix(matrix, rhs);
 		MatrixUtils.eliminate(19, matrix, rhs);
 		Map<Integer,Double> solution = MatrixUtils.getSolutionThroughBackwardSubstitution(matrix, rhs);

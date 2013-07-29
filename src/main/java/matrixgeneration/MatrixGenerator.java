@@ -61,8 +61,8 @@ public class MatrixGenerator {
 		rhs = new double[matrixSize];
 
 		for(Element matrixCreationElement : elementsList){
-			matrixCreationElement.fillMatrix(matrix);
-			matrixCreationElement.fillRhs(rhs, f);
+			matrixCreationElement.fillMatrix(matrix,true);
+			matrixCreationElement.fillRhs(rhs, f,true);
 		}
 		
 		

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import matrixgeneration.Direction;
 import matrixgeneration.DoubleArgFunction;
 import matrixgeneration.MatrixGenerator;
 import matrixgeneration.Tier;
@@ -33,6 +34,12 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 			@Override
 			public double computeValue(double x, double y) {
 				return  (1-x)*x*y + (1-x)*(1-y)+ x*y*(1-y) + 4*(1-x)*y*(1-y) + (1-x)*(1-y)*x*y + (1-x)*(x)*(1-y);
+			}
+
+			@Override
+			public double computeDerivativeValue(double x, double y,
+					Direction direction) {
+				throw new RuntimeException(); 
 			}
 			
 		};
