@@ -8,14 +8,18 @@ public class MatrixGenerator {
 	
 	private List<Element> elementsList; 
 	private int nr; 
+	private NeumanBoundaryCondition neumanBoundaryCondition; 
 	
 	private double[][] matrix; 
 	private double[] rhs; 
 	
-	public List<Tier> createMatrixAndRhs(int nrOfTiers, double botLeftX, double botLeftY, double size, DoubleArgFunction f){
+	public List<Tier> createMatrixAndRhs(int nrOfTiers, double botLeftX, double botLeftY, double size,
+			DoubleArgFunction f, NeumanBoundaryCondition neumanBoundaryCondition){
 		
 		if(nrOfTiers == 1)
 			throw new RuntimeException("co najmniej 2");
+		
+		this.neumanBoundaryCondition = neumanBoundaryCondition;
 		
 		nr = 0; 
 		elementsList = new LinkedList<Element>();
@@ -61,8 +65,8 @@ public class MatrixGenerator {
 		rhs = new double[matrixSize];
 
 		for(Element matrixCreationElement : elementsList){
-			matrixCreationElement.fillMatrix(matrix,true);
-			matrixCreationElement.fillRhs(rhs, f,true);
+			matrixCreationElement.fillMatrix(matrix,neumanBoundaryCondition == null);
+			matrixCreationElement.fillRhs(rhs, f, neumanBoundaryCondition);
 		}
 		
 		
@@ -71,18 +75,18 @@ public class MatrixGenerator {
 		for(int i =0; i<nrOfTiers; i++){
 			Tier tier; 
 			if(i == nrOfTiers -1){
-				tier = new Tier(elementsList.get(i*3),elementsList.get(i*3 + 1),elementsList.get(i*3 + 2),elementsList.get(i*3 + 3),f);
+				tier = new Tier(elementsList.get(i*3),elementsList.get(i*3 + 1),
+						elementsList.get(i*3 + 2),elementsList.get(i*3 + 3),f, neumanBoundaryCondition);
 				
 			}
 			else{
-				tier = new Tier(elementsList.get(i*3),elementsList.get(i*3 + 1),elementsList.get(i*3 + 2),null,f);
+				tier = new Tier(elementsList.get(i*3),
+						elementsList.get(i*3 + 1),elementsList.get(i*3 + 2),null,f, neumanBoundaryCondition);
 				
 			}
 			tierList.add(tier);
 		}
-		
-		
-		
+
 		return tierList;
 		
 	}

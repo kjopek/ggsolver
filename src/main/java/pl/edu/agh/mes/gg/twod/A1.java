@@ -63,7 +63,7 @@ public class A1 extends Production{
 		  T.orig_matrix = matrix;
 		  T.orig_rhs = rhs;
 		  
-		  //MatrixUtils.printMatrix(T.m_a, T.m_b);
+		  MatrixUtils.printMatrix(T.m_a, T.m_b);
 		  return T;
 	}
 }

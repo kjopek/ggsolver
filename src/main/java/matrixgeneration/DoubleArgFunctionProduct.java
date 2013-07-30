@@ -12,13 +12,8 @@ public class DoubleArgFunctionProduct implements DoubleArgFunction {
 	}
 	
 	@Override
-	public double computeValue(double x, double y) {
-		return function1.computeValue(x, y)*function2.computeValue(x, y);
-	}
-
-	@Override
-	public double computeDerivativeValue(double x, double y, Direction direction) {
-		return function1.computeDerivativeValue(x, y, direction)*function2.computeDerivativeValue(x, y, direction);
+	public double computeValue(double x, double y, Direction direction) {
+		return function1.computeValue(x, y, direction)*function2.computeValue(x, y, direction);
 	}
 
 }

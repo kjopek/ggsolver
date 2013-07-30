@@ -89,9 +89,16 @@ public class MatrixUtils {
 		final int N = matrix.length;
 		
 		for (int i=0; i<N; i++) {
+			System.out.print(i + " ");
 			for (int j=0; j<N; j++) {
 				System.out.print(String.format(null,"% .25f ", new Object[]{matrix[i][j]}));
 			}
+			System.out.println(String.format(null,"| % .25f", new Object[]{rhs[i]}));
+		}
+	}
+	
+	public static void printRhs(double[] rhs){
+		for (int i=0; i<rhs.length; i++) {
 			System.out.println(String.format(null,"| % .25f", new Object[]{rhs[i]}));
 		}
 	}

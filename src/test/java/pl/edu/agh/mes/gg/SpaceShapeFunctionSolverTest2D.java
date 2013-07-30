@@ -32,21 +32,15 @@ public class SpaceShapeFunctionSolverTest2D extends Thread {
 		DoubleArgFunction f = new DoubleArgFunction(){
 
 			@Override
-			public double computeValue(double x, double y) {
+			public double computeValue(double x, double y, Direction direction) {
 				return  (1-x)*x*y + (1-x)*(1-y)+ x*y*(1-y) + 4*(1-x)*y*(1-y) + (1-x)*(1-y)*x*y + (1-x)*(x)*(1-y);
-			}
-
-			@Override
-			public double computeDerivativeValue(double x, double y,
-					Direction direction) {
-				throw new RuntimeException(); 
 			}
 			
 		};
 		
 		MatrixGenerator matrixGenerator = new MatrixGenerator();
 		
-		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, 0, 0, 2,f);
+		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, 0, 0, 2,f,null);
 		
 		Map<Integer, Double> solution =
 				MatrixUtils.getSolutionThroughBackwardSubstitution(matrixGenerator.getMatrix(), matrixGenerator.getRhs());

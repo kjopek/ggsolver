@@ -23,29 +23,21 @@ public class Element {
 	private double[] botLeftCoord; 
 	private double size; 
 
-	private double getChi1(double var, int varNr){
-		return (var - botLeftCoord[varNr])/size;
-	}
 	
-	private double getChi2(double var, int varNr){
-		return 1 - getChi1(var, varNr);
-	}
-	
-	private double getChi3(double var, int varNr){
-		return getChi1(var, varNr)*getChi2(var, varNr);
-	}
 	
 	private DoubleArgFunction topLeftFunction = new DoubleArgFunction(){
 		
-		public double computeValue(double x, double y){
-			double value = getChi2(x, 0)*getChi1(y, 1);
+		public double computeValue(double x, double y, Direction direction){
+			double value = direction.getChi2(x, 0, size, botLeftCoord)*direction.getChi1(y, 1, size, botLeftCoord);
 			if(firstTier)
 				return value; 
 			switch(position){
 			case BOT_LEFT: 
 				return value/2.0;
 			case TOP_LEFT:
-				return value + getChi2(x, 0)*getChi2(y, 1)/2.0 + getChi1(x, 0)*getChi1(y, 1)/2.0;
+				return value + direction.getChi2(x, 0, size, botLeftCoord)*
+						direction.getChi2(y, 1, size, botLeftCoord)/2.0 + direction.getChi1(x, 0, size, botLeftCoord)*
+							direction.getChi1(y, 1,size,botLeftCoord)/2.0;
 			case TOP_RIGHT:
 				return value/2.0;
 			case BOT_RIGHT:
@@ -58,9 +50,9 @@ public class Element {
 	
 	private DoubleArgFunction topRightFunction = new DoubleArgFunction(){
 		
-		public double computeValue(double x, double y){
+		public double computeValue(double x, double y, Direction direction){
 
-			double value =  getChi1(x, 0)*getChi1(y, 1);
+			double value =  direction.getChi1(x, 0, size, botLeftCoord)*direction.getChi1(y, 1, size, botLeftCoord);
 			if(firstTier)
 				return value;
 			switch(position){
@@ -69,7 +61,7 @@ public class Element {
 			case TOP_LEFT:
 				return value/2.0;
 			case TOP_RIGHT:
-				return value + getChi2(x, 0)*getChi1(y, 1)/2.0;
+				return value + direction.getChi2(x, 0, size, botLeftCoord)*direction.getChi1(y, 1, size,botLeftCoord)/2.0;
 			case BOT_RIGHT:
 				return value; 
 			default:
@@ -81,14 +73,14 @@ public class Element {
 	
 	private DoubleArgFunction botLeftFunction = new DoubleArgFunction(){
 		
-		public double computeValue(double x, double y){
+		public double computeValue(double x, double y, Direction direction){
 			
-			double value = getChi2(x, 0)*getChi2(y, 1);
+			double value = direction.getChi2(x, 0, size, botLeftCoord)*direction.getChi2(y, 1, size, botLeftCoord);
 			if(firstTier)
 				return value; 
 			switch(position){
 			case BOT_LEFT:
-				return value + getChi2(x, 0)*getChi1(y, 1)/2.0;
+				return value + direction.getChi2(x, 0, size, botLeftCoord)*direction.getChi1(y, 1, size, botLeftCoord)/2.0;
 			case TOP_LEFT:
 				return value / 2.0;
 			case TOP_RIGHT:
@@ -104,27 +96,27 @@ public class Element {
 	
 	private DoubleArgFunction botRightFunction = new DoubleArgFunction(){
 		
-		public double computeValue(double x, double y){
+		public double computeValue(double x, double y, Direction direction){
 			
-			return getChi1(x, 0)*getChi2(y, 1);
+			return direction.getChi1(x, 0, size, botLeftCoord)*direction.getChi2(y, 1, size, botLeftCoord);
 		}
 		
 	};
 	
 	private DoubleArgFunction leftFunction = new DoubleArgFunction(){
 		
-		public double computeValue(double x, double y){
-			double value = getChi2(x, 0)*getChi3(y, 1);
+		public double computeValue(double x, double y, Direction direction){
+			double value = direction.getChi2(x, 0, size, botLeftCoord)*direction.getChi3(y, 1, size, botLeftCoord);
 			
 			switch(position){
 			case BOT_LEFT:
 				if(firstTier)
 					return value; 
-				return (value + getChi2(x, 0)*getChi1(y, 1))*0.25;
+				return (value + direction.getChi2(x, 0, size, botLeftCoord)*direction.getChi1(y, 1, size, botLeftCoord))*0.25;
 			case TOP_LEFT:
 				if(firstTier)
 					return value; 
-				return (value + getChi2(x, 0)*getChi2(y, 1))*0.25;
+				return (value + direction.getChi2(x, 0, size, botLeftCoord)*direction.getChi2(y, 1, size, botLeftCoord))*0.25;
 			case TOP_RIGHT:
 				return value; 
 			case BOT_RIGHT:
@@ -139,8 +131,8 @@ public class Element {
 	
 	private DoubleArgFunction topFunction = new DoubleArgFunction(){
 		
-		public double computeValue(double x, double y){
-			double value = getChi3(x, 0)*getChi1(y, 1);
+		public double computeValue(double x, double y, Direction direction){
+			double value = direction.getChi3(x, 0, size, botLeftCoord)*direction.getChi1(y, 1, size, botLeftCoord);
 			 
 			switch(position){
 			case BOT_LEFT:
@@ -148,11 +140,11 @@ public class Element {
 			case TOP_LEFT:
 				if(firstTier)
 					return value; 
-				return (value + getChi1(x, 0)*getChi1(y, 1))*0.25;
+				return (value + direction.getChi1(x, 0, size, botLeftCoord)*direction.getChi1(y, 1, size, botLeftCoord))*0.25;
 			case TOP_RIGHT:
 				if(firstTier)
 					return value; 
-				return (value + getChi2(x, 0)*getChi1(y, 1))*0.25;
+				return (value + direction.getChi2(x, 0, size, botLeftCoord)*direction.getChi1(y, 1, size, botLeftCoord))*0.25;
 			case BOT_RIGHT:
 				return value; 
 			default:
@@ -164,21 +156,21 @@ public class Element {
 	
 	private DoubleArgFunction rightFunction = new DoubleArgFunction(){
 		
-		public double computeValue(double x, double y){
-			return getChi1(x, 0)*getChi3(y, 1);
+		public double computeValue(double x, double y, Direction direction){
+			return direction.getChi1(x, 0, size, botLeftCoord)*direction.getChi3(y, 1, size, botLeftCoord);
 		}
 	};
 	
 	private DoubleArgFunction botFunction = new DoubleArgFunction(){
 		
-		public double computeValue(double x, double y){
-			return getChi3(x, 0)*getChi2(y, 1);
+		public double computeValue(double x, double y, Direction direction){
+			return direction.getChi3(x, 0, size, botLeftCoord)*direction.getChi2(y, 1, size, botLeftCoord);
 		}
 	};
 	
 	private DoubleArgFunction interiorFunction = new DoubleArgFunction(){
-		public double computeValue(double x, double y){
-			return getChi3(x, 0)*getChi3(y, 1);
+		public double computeValue(double x, double y, Direction direction){
+			return direction.getChi3(x, 0, size, botLeftCoord)*direction.getChi3(y, 1, size, botLeftCoord);
 		}
 	};
 	
@@ -342,56 +334,77 @@ public class Element {
 		
 	}
 	
-	private void comp(int indx1, int indx2, DoubleArgFunction f1, DoubleArgFunction f2,double[][] matrix){
+	private void comp(int indx1, int indx2, DoubleArgFunction f1, DoubleArgFunction f2,double[][] matrix, boolean pbi){
 		
-		DoubleArgFunctionProduct product = new DoubleArgFunctionProduct();
-		product.setFunctions(f1,f2);
-		matrix[indx1][indx2] += GaussianQuadrature.definiteDoubleIntegral(botLeftCoord[0], botLeftCoord[0] + size,
-				botLeftCoord[1], botLeftCoord[1] + size, product);
+		if(pbi){
+			DoubleArgFunctionProduct product = new DoubleArgFunctionProduct();
+			product.setFunctions(f1,f2);
+			matrix[indx1][indx2] += GaussianQuadrature.definiteDoubleIntegral(botLeftCoord[0], botLeftCoord[0] + size,
+					botLeftCoord[1], botLeftCoord[1] + size, product, Direction.D);
+		}
+		else{
+			//laplasjan dx + dy
+			DoubleArgFunctionSum sumF1 = new DoubleArgFunctionSum();
+			sumF1.setFunctions(f1, f1);
+			DoubleArgFunctionSum sumF2 = new DoubleArgFunctionSum();
+			sumF2.setFunctions(f2, f2);
+			DoubleArgFunctionProduct product = new DoubleArgFunctionProduct();
+			product.setFunctions(sumF1, sumF2);
+			matrix[indx1][indx2] += GaussianQuadrature.definiteDoubleIntegral(botLeftCoord[0], botLeftCoord[0] + size,
+					botLeftCoord[1], botLeftCoord[1] + size, product, Direction.DX_AND_DY);
+		}
 	}
 	
 	public void fillMatrix(double[][] matrix, int startNrAdj, boolean pbi){
-		if(pbi){
-			int[] functionNumbers = new int[] {
-				botLeftVertexNr, leftEdgeNr, topLeftVertexNr, topEdgeNr, topRightVertexNr, botEdgeNr, interiorNr, rightEdgeNr, botRightVertexNr
-			};
-			
-			for(int i = 0; i<9; i++){
-				for(int j = 0; j<9; j++){
-					comp(functionNumbers[i] - startNrAdj, functionNumbers[j] - startNrAdj, shapeFunctions[i], shapeFunctions[j], matrix);
-				}
+		
+		int[] functionNumbers = new int[] {
+			botLeftVertexNr, leftEdgeNr, topLeftVertexNr, topEdgeNr, topRightVertexNr, botEdgeNr, interiorNr, rightEdgeNr, botRightVertexNr
+		};
+		
+		for(int i = 0; i<9; i++){
+			for(int j = 0; j<9; j++){
+				comp(functionNumbers[i] - startNrAdj, functionNumbers[j] - startNrAdj, shapeFunctions[i], shapeFunctions[j], matrix, pbi);
 			}
 		}
-		
 	}
 	
 	public void fillMatrix(double[][] matrix, boolean pbi){
 		fillMatrix(matrix, 0, pbi);
 	}
 	
-	public void fillTierMatrix(double[][] matrix, double[] rhs, DoubleArgFunction f, int startNrAdj, boolean pbi){
-		fillMatrix(matrix, startNrAdj, pbi);
-		fillRhs(rhs, f, startNrAdj, pbi);
+	public void fillTierMatrix(double[][] matrix, double[] rhs, DoubleArgFunction f, int startNrAdj, NeumanBoundaryCondition neumanBoundaryCondition){
+		fillMatrix(matrix, startNrAdj, neumanBoundaryCondition == null);
+		fillRhs(rhs, f, startNrAdj, neumanBoundaryCondition);
 		
 	}
 	
-	public void fillRhs(double[] rhs, DoubleArgFunction f, int startNrAdj, boolean pbi){
-		if(pbi){
-			int[] functionNumbers = new int[] {
+	public void fillRhs(double[] rhs, DoubleArgFunction f, int startNrAdj, NeumanBoundaryCondition neumanBoundaryCondition){
+		
+		int[] functionNumbers = new int[] {
 				botLeftVertexNr, leftEdgeNr, topLeftVertexNr, topEdgeNr, topRightVertexNr, botEdgeNr, interiorNr, rightEdgeNr, botRightVertexNr
-			};
+		};
+		if(neumanBoundaryCondition == null){
 			for(int i = 0; i<9; i++){
 				DoubleArgFunctionProduct product = new DoubleArgFunctionProduct();
 				product.setFunctions(shapeFunctions[i], f);
 				
 				rhs[functionNumbers[i] - startNrAdj] += GaussianQuadrature.definiteDoubleIntegral(botLeftCoord[0], botLeftCoord[0] + size,
-						botLeftCoord[1], botLeftCoord[1] + size, product);
+						botLeftCoord[1], botLeftCoord[1] + size, product, Direction.D);
+			}
+		}
+		else{
+			//laplasjan
+			for(int i = 0; i<9; i++){
+				DoubleArgFunctionProduct product = new DoubleArgFunctionProduct();
+				product.setFunctions(shapeFunctions[i], neumanBoundaryCondition);
+				rhs[functionNumbers[i] - startNrAdj] += GaussianQuadrature.definiteIntegralOverBoundaries(botLeftCoord[0], botLeftCoord[0] + size,
+						botLeftCoord[1], botLeftCoord[1] + size, product, Direction.D);
 			}
 		}
 	}
 	
-	public void fillRhs(double[] rhs, DoubleArgFunction f, boolean pbi){
-		fillRhs(rhs, f, 0, pbi);
+	public void fillRhs(double[] rhs, DoubleArgFunction f, NeumanBoundaryCondition neumanBoundaryCondition){
+		fillRhs(rhs, f, 0, neumanBoundaryCondition);
 	}
 	
 	public void setCoefficients(Map<Integer, Double> nodeNrCoefficientMap){
@@ -414,14 +427,14 @@ public class Element {
 			double result = 0;
 		
 			for(int j = 0; j<9; j++){
-				result += shapeFunctions[j].computeValue(randomXWithinElement, randomYWithinElement)
+				result += shapeFunctions[j].computeValue(randomXWithinElement, randomYWithinElement, Direction.D)
 					*this.nodeNrCoefficientMap.get(functionNumbers[j]);
 				
 			}
 			
-			if(! (Math.abs((result - f.computeValue(randomXWithinElement, randomYWithinElement))) < 0.001)){
+			if(! (Math.abs((result - f.computeValue(randomXWithinElement, randomYWithinElement, Direction.D))) < 0.001)){
 				System.out.println("x");
-				throw new RuntimeException("Wrong for shape function space input function solution! " + (result - f.computeValue(randomXWithinElement, randomYWithinElement)));
+				throw new RuntimeException("Wrong for shape function space input function solution! " + (result - f.computeValue(randomXWithinElement, randomYWithinElement, Direction.D)));
 			}
 			
 		}
@@ -496,5 +509,9 @@ public class Element {
 	public double getSize() {
 		return size;
 	}
-	 
+	public boolean isFirstTier() {
+		return firstTier;
+	}
+
+	
 }

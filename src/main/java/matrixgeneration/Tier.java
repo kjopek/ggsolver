@@ -13,7 +13,8 @@ public class Tier {
 	private double tierMatrix[][];
 	private double rhs[];
 	
-	public Tier(Element topLeftElement, Element topRightElement, Element botLeftElement, Element botRightElement, DoubleArgFunction f){
+	public Tier(Element topLeftElement, Element topRightElement, Element botLeftElement, Element botRightElement, 
+			DoubleArgFunction f, NeumanBoundaryCondition neumanBoundaryCondition){
 		this.botLeftElement = botLeftElement; 
 		this.botRightElement = botRightElement;
 		this.topLeftElement = topLeftElement; 
@@ -23,11 +24,11 @@ public class Tier {
 		rhs = new double[21];
 		
 		startNrAdj = botLeftElement.getBotLeftVertexNr();
-		botLeftElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj,true);
-		topLeftElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj,true);
+		botLeftElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj, neumanBoundaryCondition);
+		topLeftElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj, neumanBoundaryCondition);
 		if(botRightElement != null)
-			botRightElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj,true);
-		topRightElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj,true);
+			botRightElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj, neumanBoundaryCondition);
+		topRightElement.fillTierMatrix(tierMatrix, rhs, f, startNrAdj, neumanBoundaryCondition);
 		
 	}
 
@@ -67,6 +68,18 @@ public class Tier {
 		topRightElement.checkInterpolationCorectness(f);
 		if(botRightElement != null)
 			botRightElement.checkInterpolationCorectness(f);
+	}
+
+	
+	public void applyDirichletBoundaryCondition(int[] functionNumbers, double value){
+		if(!topLeftElement.isFirstTier())
+			throw new UnsupportedOperationException(); 
+		for(int i : functionNumbers){
+			for(int j = 0; j<tierMatrix.length; j++)
+				tierMatrix[i][j] = 0; 
+			tierMatrix[i][i] = 1; 
+			rhs[i] = value;
+		}
 	}
 	
 	

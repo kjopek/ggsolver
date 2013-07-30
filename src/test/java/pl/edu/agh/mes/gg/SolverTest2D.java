@@ -28,21 +28,16 @@ public class SolverTest2D extends Thread {
 
 	@Test
 	public void testSolveMES2D(){
-		int nrOfTiers = 8;
+		int nrOfTiers = 2;
 		final double epsilon = 1e-7;
 
 		DoubleArgFunction f = new DoubleArgFunction(){
 
 			@Override
-			public double computeValue(double x, double y) {
+			public double computeValue(double x, double y, Direction direction) {
 				return 1; 
 			}
 
-			@Override
-			public double computeDerivativeValue(double x, double y,
-					Direction direction) {
-				throw new RuntimeException(); 
-			}
 			
 		};
 		
@@ -50,7 +45,7 @@ public class SolverTest2D extends Thread {
 		double [] rhs;
 		
 		MatrixGenerator matrixGenerator = new MatrixGenerator(); 
-		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1, -1, 1,f);
+		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1, -1, 1,f,null);
 		
 		matrix = matrixGenerator.getMatrix();
 		rhs = matrixGenerator.getRhs();

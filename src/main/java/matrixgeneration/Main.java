@@ -45,21 +45,16 @@ public class Main {
 		DoubleArgFunction f = new DoubleArgFunction() {
 			
 			@Override
-			public double computeValue(double x, double y) {
+			public double computeValue(double x, double y, Direction direction) {
 				return y*x + 3 + x + y;
 			}
 
-			@Override
-			public double computeDerivativeValue(double x, double y,
-					Direction direction) {
-				throw new RuntimeException();
-			}
 		};
 		double[][] matrix = new double[19][19];
 		double[] rhs = new double[19];
-		elment.fillTierMatrix(matrix, rhs, f,0,true);
-		elment2.fillTierMatrix(matrix, rhs, f, 0,true);
-		elment3.fillTierMatrix(matrix, rhs, f, 0,true);
+		elment.fillTierMatrix(matrix, rhs, f,0,null);
+		elment2.fillTierMatrix(matrix, rhs, f, 0,null);
+		elment3.fillTierMatrix(matrix, rhs, f, 0,null);
 		MatrixUtils.printMatrix(matrix, rhs);
 		MatrixUtils.eliminate(19, matrix, rhs);
 		Map<Integer,Double> solution = MatrixUtils.getSolutionThroughBackwardSubstitution(matrix, rhs);

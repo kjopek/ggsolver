@@ -21,19 +21,14 @@ public class Benchmark {
 		TreeBuilder treeBuilder = new TreeBuilder();
 		DoubleArgFunction f = new DoubleArgFunction() {
 			@Override
-			public double computeValue(double x, double y) {
+			public double computeValue(double x, double y, Direction direction) {
 				return 1.0; 
 			}
 
-			@Override
-			public double computeDerivativeValue(double x, double y,
-					Direction direction) {
-				throw new RuntimeException();
-			}
 		};
 
 		MatrixGenerator matrixGenerator = new MatrixGenerator();
-		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1, -1, 2,f);
+		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1, -1, 2,f,null);
 
 		long productionTime1 = System.currentTimeMillis();
 		treeBuilder.buildTree(tierList);

@@ -22,18 +22,12 @@ public class TreeBuilderTest2D {
 	@Test
 	public void treeBuilderTest() {
 		
-		int nrOfTiers = 51; 
+		int nrOfTiers = 2; 
 		TreeBuilder treeBuilder = new TreeBuilder();
 		DoubleArgFunction f = new DoubleArgFunction() {
 			@Override
-			public double computeValue(double x, double y) {
-				return 1; 
-			}
-
-			@Override
-			public double computeDerivativeValue(double x, double y,
-					Direction direction) {
-				throw new RuntimeException();
+			public double computeValue(double x, double y, Direction direction) {
+				return x+y+3*x*y; 
 			}
 		};
 
@@ -41,7 +35,7 @@ public class TreeBuilderTest2D {
 		double [] rhs;
 
 		MatrixGenerator matrixGenerator = new MatrixGenerator();
-		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1, -1, 2, f);
+		List<Tier> tierList = matrixGenerator.createMatrixAndRhs(nrOfTiers, -1, -1, 2, f, null);
 		
 		List<Vertex> leafVertexList = treeBuilder.buildTree(tierList);
 
@@ -59,10 +53,10 @@ public class TreeBuilderTest2D {
 			firstNodeNr+=12;
 		}
 
-//		for(Tier tier : tierList){
-//			tier.setCoefficients(productionSolution);
-//			tier.checkInterpolationCorectness(f);
-//		}
+		for(Tier tier : tierList){
+			tier.setCoefficients(productionSolution);
+			tier.checkInterpolationCorectness(f);
+		}
 		
 		for(int key : matrixSolution.keySet()) {
 			System.out.println("key: "+key);
