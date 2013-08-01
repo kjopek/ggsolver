@@ -61,12 +61,14 @@ public class Tier {
 			botRightElement.setCoefficients(nodeNrCoefficientMap);
 	}
 	
-	public void checkInterpolationCorectness(DoubleArgFunction f){
-		botLeftElement.checkInterpolationCorectness(f);
-		topLeftElement.checkInterpolationCorectness(f);
-		topRightElement.checkInterpolationCorectness(f);
+	public double checkInterpolationCorectness(DoubleArgFunction f){
+		double r = 0.0;
+		r += botLeftElement.checkInterpolationCorectness(f);
+		r += topLeftElement.checkInterpolationCorectness(f);
+		r += topRightElement.checkInterpolationCorectness(f);
 		if(botRightElement != null)
-			botRightElement.checkInterpolationCorectness(f);
+			r += botRightElement.checkInterpolationCorectness(f);
+		return r;
 	}
 	
 	

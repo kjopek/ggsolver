@@ -397,12 +397,12 @@ public class Element {
 		this.nodeNrCoefficientMap = nodeNrCoefficientMap;
 	}
 	
-	public void checkInterpolationCorectness(DoubleArgFunction f){
+	public double checkInterpolationCorectness(DoubleArgFunction f){
 		Random random = new Random();
 		
 		double x = this.botLeftCoord[0];
 		double y = this.botLeftCoord[1]; 
-		
+		double error = 0;
 		for(int i = 0; i<5; i++){
 			double randomXWithinElement = x + random.nextDouble()*size; 
 			double randomYWithinElement = y + random.nextDouble()*size; 
@@ -418,13 +418,13 @@ public class Element {
 				
 			}
 			
-			if(! (Math.abs((result - f.computeValue(randomXWithinElement, randomYWithinElement))) < 0.001)){
+			/*if(! (Math.abs((result - f.computeValue(randomXWithinElement, randomYWithinElement))) < 0.001)){
 				System.out.println("x");
 				throw new RuntimeException("Wrong for shape function space input function solution! " + (result - f.computeValue(randomXWithinElement, randomYWithinElement)));
-			}
-			
+			}*/
+			error += Math.abs(result-f.computeValue(randomXWithinElement, randomYWithinElement));
 		}
-		
+		return error;
 		
 	}
 	
