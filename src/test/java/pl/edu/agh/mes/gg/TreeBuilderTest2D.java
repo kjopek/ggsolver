@@ -21,12 +21,12 @@ public class TreeBuilderTest2D {
 	@Test
 	public void treeBuilderTest() {
 		
-		int nrOfTiers = 2; 
+		int nrOfTiers = 8; 
 		TreeBuilder treeBuilder = new TreeBuilder();
 		DoubleArgFunction f = new DoubleArgFunction() {
 			@Override
 			public double computeValue(double x, double y) {
-				return x*x+y*y;
+				return x+y;
 			}
 		};
 
@@ -77,7 +77,7 @@ public class TreeBuilderTest2D {
 			System.out.println("Matrix: "+matrixSolution.get(key));
 			System.out.println("Production: "+productionSolution.get(key));
 			error += (matrixSolution.get(key)-productionSolution.get(key))*(matrixSolution.get(key)-productionSolution.get(key));
-			//assertTrue(Math.abs(matrixSolution.get(key) - productionSolution.get(key)) < epsilon);
+			assertTrue(Math.abs(matrixSolution.get(key) - productionSolution.get(key)) < epsilon);
 		}
 		System.out.println("Error: "+error);
 		assertTrue(productionSolution.size() == matrixSolution.size());

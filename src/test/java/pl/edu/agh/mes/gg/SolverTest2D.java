@@ -236,7 +236,7 @@ public class SolverTest2D extends Thread {
 				System.out.println("key: "+key);
 				System.out.println("Matrix: "+matrixSolution.get(key));
 				System.out.println("Production: "+productionSolution.get(key));
-    			//assertTrue(Math.abs(matrixSolution.get(key) - productionSolution.get(key)) < epsilon);
+    			assertTrue(Math.abs(matrixSolution.get(key) - productionSolution.get(key)) < epsilon);
 		}
 		
 		//MatrixUtils.printMatrix(p3a.m_vertex.m_a, p3a.m_vertex.m_b);

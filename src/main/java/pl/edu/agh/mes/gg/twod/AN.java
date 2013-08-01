@@ -54,7 +54,7 @@ public class AN extends Production {
 			for (int j=0; j<5; j++) {
 				T.m_a[i+7][j+7] = matrix[i+4][j+4]; // 1
 				T.m_a[i+7][j+12] = matrix[i+4][j+12+4]; // 3
-				T.m_a[i+12][i+7] = matrix[i+12+4][j+4]; // 7
+				T.m_a[i+12][j+7] = matrix[i+12+4][j+4]; // 7
 				T.m_a[i+12][j+12] = matrix[i+12+4][j+12+4]; // 9
 			}
 		}
@@ -84,9 +84,6 @@ public class AN extends Production {
 		}
 		
 		MatrixUtils.eliminate(7, T.m_a, T.m_b);
-
-		System.out.println("==== AN ====");
-		MatrixUtils.printMatrix(T.m_a, T.m_b);
 		return T;
 	}
 

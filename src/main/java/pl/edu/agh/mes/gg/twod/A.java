@@ -18,15 +18,13 @@ public class A extends Production {
 
 		double [][] tierMatrix = m_tier.getMatrix();
 		double [] tierRhs = m_tier.getRhs();
-		
-		System.out.println("==== A - pre processed ====");
-		MatrixUtils.printMatrix(tierMatrix, tierRhs);
+
 		
 		for (int i=0; i<5; i++) {
 			for (int j=0; j<5; j++) {
 				T.m_a[i+7][j+7] = tierMatrix[i][j]; // 1
 				T.m_a[i+7][j+12] = tierMatrix[i][j+12]; // 3
-				T.m_a[i+12][i+7] = tierMatrix[i+12][j]; // 7
+				T.m_a[i+12][j+7] = tierMatrix[i+12][j]; // 7
 				T.m_a[i+12][j+12] = tierMatrix[i+12][j+12]; // 9
 			}
 		}
@@ -56,8 +54,6 @@ public class A extends Production {
 		}
 		
 		MatrixUtils.eliminate(7, T.m_a, T.m_b);
-		System.out.println("======");
-		MatrixUtils.printMatrix(T.m_a, T.m_b);
 
 		return T;
 

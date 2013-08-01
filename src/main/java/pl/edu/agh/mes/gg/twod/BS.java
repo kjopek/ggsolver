@@ -70,9 +70,9 @@ public class BS extends Production{
 					for (int i=0; i<17; i++) {
 						for (int j=0; j<17; j++) {
 							if (i == j) {
-								T.orig_matrix[i][j] = 1.0;
+								T.orig_matrix[i+4][j+4] = 1.0;
 							} else {
-								T.orig_matrix[i][j] = 0.0;
+								T.orig_matrix[i+4][j+4] = 0.0;
 							}
 						}
 					}
@@ -91,8 +91,6 @@ public class BS extends Production{
 		} else {		
 			// run backward substitution on full matrix (ERoot)
 			MatrixUtils.backwardSubstitution(T.m_a, T.m_b, 14);
-			System.out.println("==== BS ====");
-			MatrixUtils.printMatrix(T.m_a, T.m_b);
 		}
 
 

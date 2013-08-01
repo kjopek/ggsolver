@@ -20,7 +20,7 @@ public class A2 extends Production {
 
 		T.m_a = new double[size][size];
 		T.m_b = new double[size];
-		/*
+		
 		if (T.m_left.m_a.length == T.m_right.m_a.length) {
 			if (T.m_left.m_a.length == 17 && T.m_right.m_a.length == 17) {
 				offsetA = 12;
@@ -29,7 +29,6 @@ public class A2 extends Production {
 				offsetA = 10;
 				offsetB = 5;
 			}
-			System.out.println("OK");
 			for (i=0;i<5;i++) {
 				for (j=0; j<5; j++) {
 					// x:left y:top
@@ -119,7 +118,7 @@ public class A2 extends Production {
 				}
 			}
 		}
-		*/
+		/*
 		if (T.m_left.m_a.length == T.m_right.m_a.length && T.m_left.m_a.length == 17) {
 			for (i=0;i<5;i++) {
 				for (j=0; j<5; j++) {
@@ -180,8 +179,7 @@ public class A2 extends Production {
 				T.m_b[i+10] = T.m_right.m_b[i+10];
 			}
 		}
-		System.out.println("==== A2 ====");
-		MatrixUtils.printMatrix(T.m_a, T.m_b);
+		*/
 		return T;
 	}
 

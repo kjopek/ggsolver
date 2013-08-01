@@ -85,9 +85,19 @@ public class Vertex {
 			}
 		}
 		else{
-			for(int i = firstNodeNr; i<firstNodeNr + 17; i++){
-				solution.put(i,m_b[i - firstNodeNr]);
+			
+			for (int i=0; i<5; i++) {
+				solution.put(i+firstNodeNr, m_b[i+7]);
 			}
+			
+			for (int i=0; i<7; i++) {
+				solution.put(i+firstNodeNr+5, m_b[i]);
+			}
+			
+			for (int i=0;i<5; i++) {
+				solution.put(i+firstNodeNr+12, m_b[i+12]);
+			}
+			
 		}
 	}
 	
