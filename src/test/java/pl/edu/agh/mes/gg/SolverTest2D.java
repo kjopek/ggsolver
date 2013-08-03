@@ -142,6 +142,7 @@ public class SolverTest2D extends Thread {
 		a2_2.start();
 		a2_3.start();
 		a2_4.start();
+
 		counter.release();
 
 		E e1 = new E(p2c.m_vertex, counter);
@@ -241,7 +242,6 @@ public class SolverTest2D extends Thread {
 		}
 		
 		//MatrixUtils.printMatrix(p3a.m_vertex.m_a, p3a.m_vertex.m_b);
-		
 		
 	}
 
