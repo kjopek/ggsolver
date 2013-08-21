@@ -28,7 +28,10 @@ final static double epsilon = 1e-9;
 	public void laplaceTest() {
 		
 		double size = 2; 
-		double[] botLeftCoord = new double[] { 0.0, 0.0 };
+		double botLeftX = 0.0;
+		double botLeftY = 0.0;
+		double step = 0.20;
+		double[] botLeftCoord = new double[] { botLeftX, botLeftY };
 		int nrOfTiers = 2; 
 		TreeBuilder treeBuilder = new TreeBuilder();
 		NeumanBoundaryCondition neumanBoundaryCondition = new NeumanBoundaryCondition(botLeftCoord, size) {
@@ -40,7 +43,7 @@ final static double epsilon = 1e-9;
 			
 			@Override
 			public double computeValueOnRightEdge(double x, double y) {
-				return 2; 
+				return -2; 
 			}
 			
 			@Override
@@ -50,7 +53,7 @@ final static double epsilon = 1e-9;
 			
 			@Override
 			public double computeValueOnBotEdge(double x, double y) {
-				return -2; 
+				return 2; 
 			}
 		};
 		
@@ -62,36 +65,7 @@ final static double epsilon = 1e-9;
 		
 		DirichletBoundaryCondition dirichletBoundaryCondition = new DirichletBoundaryCondition();
 		dirichletBoundaryCondition.applyDirichletBoundaryCondition(matrix, rhs, tierList, new int[] {0,1,2,3,4,5,6,7,8}, 0);
-		
-		/*
-		double[] testRhs = new double[37];
-		for(int i = 0; i<tierList.get(0).getRhs().length; i++)
-			testRhs[i] = tierList.get(0).getRhs()[i];
-		
-		for(int i = 0; i<tierList.get(1).getRhs().length; i++)
-			testRhs[i + 16] += tierList.get(1).getRhs()[i];
-		
-		for(int i = 0; i<37; i++){
-			System.out.println(i + " " + Math.abs(rhs[i] - testRhs[i]));
-			assertTrue(Math.abs(rhs[i] - testRhs[i]) < 0.0001);
-		}
-		System.out.println("koniec RHS");
-		double[][] testMatrix = new double[37][37];
-		for(int i = 0; i<tierList.get(0).getMatrix().length; i++)
-			for(int j = 0; j<tierList.get(0).getMatrix().length; j++)
-				testMatrix[i][j] = tierList.get(0).getMatrix()[i][j];
-		
-		for(int i = 0; i<tierList.get(1).getMatrix().length; i++)
-			for(int j = 0; j<tierList.get(1).getMatrix().length; j++)
-				testMatrix[i + 16][j + 16] += tierList.get(1).getMatrix()[i][j];
-		
-		for(int i = 0; i<37; i++)
-			for(int j = 0; j<37; j++){
-				System.out.println(i + " " + j + " " + Math.abs(matrix[i][j] - testMatrix[i][j]));
-				assertTrue(Math.abs(matrix[i][j] - testMatrix[i][j]) < epsilon);
-		}
-		*/
-		
+
 		MatrixUtils.printMatrix(matrix, rhs);
 		List<Vertex> leafVertexList = treeBuilder.buildTree(tierList);		
 		
@@ -111,18 +85,55 @@ final static double epsilon = 1e-9;
 			tier.setCoefficients(productionSolution);
 			//tier.checkInterpolationCorectness(f);
 		}
-		
-		 
-		
-		
+			
 		for(int key : matrixSolution.keySet()) {
-			System.out.println("key: "+key);
-			System.out.println("Matrix: "+matrixSolution.get(key));
-			System.out.println("Production: "+productionSolution.get(key));
-			//assertTrue(Math.abs(matrixSolution.get(key) - productionSolution.get(key)) < epsilon);
+			//System.out.println("key: "+key);
+			//System.out.println("Matrix: "+matrixSolution.get(key));
+			//System.out.println("Production: "+productionSolution.get(key));
+			assertTrue(Math.abs(matrixSolution.get(key) - productionSolution.get(key)) < epsilon);
 		}
 		
 		assertTrue(productionSolution.size() == matrixSolution.size());
+		
+		int solutionMatrixSize = (int)Math.ceil(size / step) + 1;
+		double[][] solutionMatrix = new double[solutionMatrixSize][solutionMatrixSize];
+		Map<double[],int[]> pointIdicesMap = new HashMap<double[],int[]>();
+		double xCoord = botLeftX;
+		double yCoord = botLeftY;
+		int iIndex = 0; 
+		int jIndex = solutionMatrixSize - 1; 
+		
+		for(int i = 0; i<solutionMatrixSize; i++){
+			yCoord = botLeftY;
+			jIndex = solutionMatrixSize - 1;
+			for(int j = 0; j<solutionMatrixSize; j++){
+				pointIdicesMap.put(new double[]{xCoord,yCoord}, new int[]{iIndex,jIndex});
+				yCoord += step;
+				jIndex -= 1; 
+			}
+			iIndex += 1; 
+			xCoord += step;
+		}
+
+
+		for(double[] key : pointIdicesMap.keySet()){
+			System.out.println(key[0] + " " + key[1] + " " +pointIdicesMap.get(key)[0] + " " + pointIdicesMap.get(key)[1]);
+		}
+
+		for(Tier tier : tierList){
+			tier.getSolution(pointIdicesMap, solutionMatrix);
+		}
+		
+		System.out.println("\nSOLUTION\n");
+		for(int i = 0; i<solutionMatrixSize; i++){
+			for(int j = 0; j<solutionMatrixSize; j++){
+				System.out.print(String.format(null,"% .5f ", new Object[]{solutionMatrix[i][j]}) + " ");
+			}
+			System.out.println();
+		}
+
+
+		
 		
 	}
 

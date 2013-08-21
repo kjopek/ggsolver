@@ -1,5 +1,7 @@
 package matrixgeneration;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class Tier {
@@ -84,5 +86,39 @@ public class Tier {
 		}
 	}
 	
+	public void getSolution(Map<double[],int[]> points, double[][] solution){
+		
+		for(Iterator<double[]> iterator = points.keySet().iterator(); iterator.hasNext(); ){
+			double[] point = iterator.next();
+			int[] indices = points.get(point);
+			double x = point[0];
+			double y = point[1];
+			if(topLeftElement.isWithinElement(x, y)){
+				solution[indices[0]][indices[1]] = topLeftElement.getSolution(x, y);
+				System.out.println(x + " "  + y + " " + solution[indices[0]][indices[1]]);
+				iterator.remove();
+				continue;
+			}
+			if(topRightElement.isWithinElement(x, y)){
+				solution[indices[0]][indices[1]] = topRightElement.getSolution(x, y);
+				System.out.println(x + " "  + y + " " + solution[indices[0]][indices[1]]);
+				iterator.remove();
+				continue;
+			}
+			if(botLeftElement.isWithinElement(x, y)){
+				solution[indices[0]][indices[1]] = botLeftElement.getSolution(x, y);
+				System.out.println(x + " "  + y + " " + solution[indices[0]][indices[1]]);
+				iterator.remove();
+				continue;
+			}
+			if(botRightElement != null && botRightElement.isWithinElement(x, y)){
+				solution[indices[0]][indices[1]] = topLeftElement.getSolution(x, y);
+				System.out.println(x + " "  + y + " " + solution[indices[0]][indices[1]]);
+				iterator.remove();
+				continue;
+			}
+		}
+		
+	}
 	
 }

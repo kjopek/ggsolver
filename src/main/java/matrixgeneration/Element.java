@@ -343,15 +343,16 @@ public class Element {
 					botLeftCoord[1], botLeftCoord[1] + size, product, Direction.D);
 		}
 		else{
-			//laplasjan dx + dy
-			DoubleArgFunctionSum sumF1 = new DoubleArgFunctionSum();
-			sumF1.setFunctions(f1, f1);
-			DoubleArgFunctionSum sumF2 = new DoubleArgFunctionSum();
-			sumF2.setFunctions(f2, f2);
-			DoubleArgFunctionProduct product = new DoubleArgFunctionProduct();
-			product.setFunctions(sumF1, sumF2);
+			//laplasjan 
+			DoubleArgFunctionProduct p1 = new DoubleArgFunctionProduct();
+			p1.setFunctions(f1, f2);
+			DoubleArgFunctionProduct p2 = new DoubleArgFunctionProduct();
+			p2.setFunctions(f1, f2);
+			DoubleArgFunctionSum sum = new DoubleArgFunctionSum();
+			sum.setFunctions(p1,p2);
+			
 			matrix[indx1][indx2] += GaussianQuadrature.definiteDoubleIntegral(botLeftCoord[0], botLeftCoord[0] + size,
-					botLeftCoord[1], botLeftCoord[1] + size, product, Direction.DX_AND_DY);
+					botLeftCoord[1], botLeftCoord[1] + size, sum, Direction.DX_AND_DY);
 		}
 	}
 	
@@ -421,16 +422,7 @@ public class Element {
 			double randomXWithinElement = x + random.nextDouble()*size; 
 			double randomYWithinElement = y + random.nextDouble()*size; 
 			
-			int[] functionNumbers = new int[]{
-				botLeftVertexNr, leftEdgeNr, topLeftVertexNr, topEdgeNr, topRightVertexNr, botEdgeNr, interiorNr, rightEdgeNr, botRightVertexNr	
-			};
-			double result = 0;
-		
-			for(int j = 0; j<9; j++){
-				result += shapeFunctions[j].computeValue(randomXWithinElement, randomYWithinElement, Direction.D)
-					*this.nodeNrCoefficientMap.get(functionNumbers[j]);
-				
-			}
+			double result = getSolution(randomXWithinElement, randomYWithinElement);
 			
 
 			if(! (Math.abs((result - f.computeValue(randomXWithinElement, randomYWithinElement, Direction.D))) < 0.001)){
@@ -444,6 +436,27 @@ public class Element {
 		
 	}
 	
+	public double getSolution(double x, double y){
+		int[] functionNumbers = new int[]{
+				botLeftVertexNr, leftEdgeNr, topLeftVertexNr, topEdgeNr, topRightVertexNr, botEdgeNr, interiorNr, rightEdgeNr, botRightVertexNr	
+			};
+		double result = 0;
+		
+		for(int j = 0; j<9; j++){
+			result += shapeFunctions[j].computeValue(x, y, Direction.D)
+				*this.nodeNrCoefficientMap.get(functionNumbers[j]);
+		}
+		return result;
+	}
+	
+	public boolean isWithinElement(double x, double y){
+		
+		if((botLeftCoord[0] <= x) && (botLeftCoord[0] + size >= x))
+			if((botLeftCoord[1] <= y) && (botLeftCoord[1] + size >= y))
+				return true; 
+		
+		return false; 
+	}
 	
 	public Position getPosition() {
 		return position;

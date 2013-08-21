@@ -12,7 +12,6 @@ public class AN extends Production{
 	
 	@Override
 	public Vertex apply(Vertex T) {
-		System.out.println("AN");
 		T.m_a[1][1]=-1.0;
 		T.m_a[2][1]=0.0;
 		T.m_a[1][2]=1.0;

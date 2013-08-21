@@ -200,7 +200,6 @@ public class TreeBuilder extends Thread {
 			counter.release();
 			
 			if (low_range == 0) {
-				System.out.println("Run A1");
 				A1 a1 = new A1(p3a.m_vertex, counter, tierList.get(low_range));
 				a1.start();
 			} else {
@@ -209,7 +208,6 @@ public class TreeBuilder extends Thread {
 			}
 			
 			if (high_range == n-1) {
-				System.out.println("Run AN");
 				AN an = new AN(p3b.m_vertex,counter, tierList.get(high_range));
 				an.start();
 			} else {

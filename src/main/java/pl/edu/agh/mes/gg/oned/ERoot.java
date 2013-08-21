@@ -12,7 +12,6 @@ public class ERoot extends Production{
 	
 	@Override
 	public Vertex apply(Vertex T) {
-		System.out.println("ERoot");
 		double x = T.m_a[0][0];
 		T.m_a[0][0] /= x; 
 		T.m_a[0][1] /= x;
